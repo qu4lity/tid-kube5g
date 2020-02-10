@@ -3,10 +3,10 @@ This repo is meant to serve as for bootstraping k8s on top on vms in order to qu
 
 ## Repo Structure
 
--[vmtools] (tools/)
+- [vmtools](tools/)
 A bunch of vm management helper scripts used to bootstrap the virtual infra.
 
--[prepare-vms] (prepare-vms)
+- [prepare-vms](prepare-vms)
 Ansible scripts to automate the configuration and provisioning of the ubuntu VMs.
 
 ## Getting Started
