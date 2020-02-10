@@ -1,0 +1,6 @@
+---
+- name: Install HWE kernel
+  become: yes
+  apt:
+    name: linux-generic-hwe-18.04
+    state: latest

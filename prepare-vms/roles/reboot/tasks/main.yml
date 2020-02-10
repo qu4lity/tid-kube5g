@@ -1,0 +1,5 @@
+---
+- name: Reboot target
+  become: yes
+  when: reboot_needed is succeeded
+  reboot:

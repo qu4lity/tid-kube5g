@@ -1,0 +1,13 @@
+---
+- name: Bootstrap cloned image
+  tags: bootstap
+  hosts: target
+  gather_facts: yes
+  vars:
+    user: "sysadmin"
+    release: bionic
+    apt_updated: "0"
+  roles:
+    - bootstrap
+    - software
+      #- reboot

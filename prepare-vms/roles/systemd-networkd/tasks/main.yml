@@ -1,0 +1,36 @@
+---
+- name: Install systemd-network template for primary interface
+  become: yes
+  template:
+    src: 10-wired.network.j2
+    dest: /etc/systemd/network/10-wired.network
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Set if reboot is needed
+  become: yes
+  shell: "systemctl is-enabled systemd-networkd | grep enabled-runtime"
+  ignore_errors: True  
+  register: reboot_needed
+
+- name: Ensure systemd-network is disabled
+  become: yes
+  systemd:
+    name: systemd-networkd
+    state: started
+    enabled: no
+
+- name: Enable systemd-network
+  become: yes
+  systemd:
+    name: systemd-networkd
+    state: started
+    enabled: yes
+
+- name: Remove netplan.io
+  become: yes
+  apt:
+    name: netplan.io
+    state: absent
+

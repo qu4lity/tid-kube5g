@@ -1,0 +1,12 @@
+---
+- name: Install ansible repo
+  become: yes
+  apt_repository:
+    repo: ppa:ansible/ansible
+    state: present
+
+- name: Install ansible
+  become: yes
+  apt:
+    name: ansible
+    state: latest

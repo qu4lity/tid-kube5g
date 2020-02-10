@@ -1,0 +1,22 @@
+---
+- name: Install dependencies
+  become: yes
+  apt:
+    state: latest
+    name:
+      - ruby-libvirt
+      - libxslt-dev
+      - libxml2-dev
+      - libvirt-dev
+      - zlib1g-dev
+      - ruby-dev
+
+- name: Install vagrant
+  become: yes
+  apt:
+    state: latest
+    name: vagrant
+
+- name: Install libvirt provider
+  become: yes
+  shell: vagrant plugin install vagrant-libvirt
