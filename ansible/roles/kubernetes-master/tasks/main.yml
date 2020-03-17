@@ -1,0 +1,47 @@
+---
+- name: Check if master is already initialized
+  command: wget 127.0.0.1:6443
+  register: apiserver_check
+  ignore_errors: true
+
+- name: Init Kubernetes master
+  become: yes
+  shell: kubeadm init --pod-network-cidr={{ pod_network_cidr }} --kubernetes-version={{ kubernetes_version}}
+  when: apiserver_check.rc != 8
+
+- name: Set cluster token variable
+  become: yes
+  shell: "kubeadm token list | cut -d ' ' -f1 | sed -n '2p'"
+  register: K8S_TOKEN
+
+- name: Set Cluster CA Cert hash
+  shell: "openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'"
+  register: K8S_CERT
+
+- name: Set Master API
+  set_fact:
+    k8s_master_api: "{{ ansible_default_ipv4.address }}:6443"
+    cacheable: yes
+  delegate_to: localhost
+  delegate_facts: yes
+
+- name: set K8s token fact
+  set_fact:
+    k8s_token: "{{ K8S_TOKEN.stdout }}"
+    cacheable: yes
+  delegate_to: localhost
+  delegate_facts: yes
+
+- name: set K8s cert fact
+  set_fact:
+    k8s_cert: "{{ K8S_CERT.stdout }}"
+    cacheable: yes
+  delegate_to: localhost
+  delegate_facts: yes
+
+- name: Fetch kubernetes config file
+  become: yes
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: kube.config
+    flat: yes

@@ -1,0 +1,34 @@
+---
+- name: Install docker.io
+  become: yes
+  apt:
+    update_cache: yes
+    autoremove: yes
+    state: present
+    force: yes
+    name: docker.io={{ docker_version }}
+
+- name: adding existing user '{{ ansible_user }}' to group docker
+  become: yes
+  user:
+    name: '{{ ansible_user }}'
+    groups: docker
+    append: yes
+
+- name: setup cgroupdriver as systemd and allow insecure local registry
+  become: yes
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/docker/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - daemon.json
+
+- name: restart docker service
+  become: yes
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes

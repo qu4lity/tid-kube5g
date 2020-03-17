@@ -1,8 +1,0 @@
----
-dependencies:
-    - role: hwe
-      when: want_hwe is defined and want_hwe
-    - sudo
-    - user
-    - apt
-    #- systemd-networkd

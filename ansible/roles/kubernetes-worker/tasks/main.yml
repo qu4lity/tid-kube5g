@@ -1,0 +1,13 @@
+---
+- name: Check if worker is already initialized
+  command: wget 127.0.0.1:10250
+  register: kubelet_check
+  ignore_errors: true
+
+- name: "Kubeadmn join"
+  become: yes
+  shell: >
+    kubeadm join --token={{ hostvars['localhost']['k8s_token'] }}
+    --discovery-token-ca-cert-hash sha256:{{ hostvars['localhost']['k8s_cert'] }}
+    {{ hostvars['localhost']['k8s_master_api'] }}
+  when: kubelet_check.rc != 8

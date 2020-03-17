@@ -1,0 +1,9 @@
+---
+- name: Update deployed system
+  tags: update
+  hosts: target
+  gather_facts: yes
+  vars:
+    apt_updated: "0"
+  roles:
+    - apt

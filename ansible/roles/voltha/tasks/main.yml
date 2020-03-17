@@ -1,0 +1,34 @@
+---
+- name: Install dependencies
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop:
+    - python-pip
+    - net-tools
+    - virtualenv
+    - libpcap-dev
+    - docker-compose
+
+- name: Install pip dependencies
+  become: yes
+  pip:
+    executable: /usr/bin/pip
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - netifaces
+    - netaddr
+
+- name: Clone Voltha repository to tag 'help'
+  git:
+    repo: 'https://github.com/opencord/voltha.git'
+    dest: ~/voltha
+    version: master
+
+- name: Build images
+  shell: source ~/voltha/env.sh && cd ~/voltha/ && make install-protoc && make fetch && make build
+  args:
+     executable: /bin/bash

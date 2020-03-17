@@ -1,0 +1,29 @@
+---
+dependencies:
+    - git
+    - vim
+    - unzip
+    - role: ansible
+      when: want_ansible is defined and want_ansible
+    - role: terraform
+      when: want_terraform is defined and want_terraform
+    - role: packer
+      when: want_packer is defined and want_packer
+    - role: vagrant
+      when: want_vagrant is defined and want_vagrant
+    - role: docker
+      when: want_docker is defined and want_docker
+    - role: crio
+      when: want_crio is defined and want_crio
+    - role: libvirt
+      when: want_libvirt is defined and want_libvirt
+    - role: kubernetes
+      when: want_kubernetes is defined and want_kubernetes
+    - role: kubernetes-master
+      when: want_kubernetes_master is defined and want_kubernetes_master
+    - role: calico
+      when: want_calico is defined and want_calico
+    - role: kubernetes-worker
+      when: want_kubernetes_worker is defined and want_kubernetes_worker
+    - role: voltha
+      when: want_voltha is defined and want_voltha

@@ -1,6 +1,0 @@
-- name: Install avahi
-  become: yes
-  apt:
-    update_cache: yes
-    state: latest
-    name: avahi-daemon

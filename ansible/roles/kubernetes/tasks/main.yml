@@ -1,0 +1,50 @@
+---
+# This task disables swap for Kubernetes node (see https://github.com/kubernetes/kubernetes/pull/31996)
+# https://github.com/kubernetes/contrib/blob/master/ansible/roles/node/tasks/swapoff.yml
+- name: Remove swapfile from /etc/fstab
+  become: yes
+  mount:
+    path: none
+    fstype: swap
+    state: absent
+
+- name: Disable swap
+  become: yes
+  command: swapoff -a
+
+- name: Add needed GPG keys
+  become: yes
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  loop:
+    - https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+- name: Add necessary apt repositories
+  become: yes
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop:
+    - deb http://apt.kubernetes.io/ kubernetes-xenial main
+
+- name: Purge previous kubeadm version
+  become: yes
+  apt:
+    update_cache: yes
+    state: absent
+    name: "{{ item }}"
+  loop:
+    - kubeadm
+    - kubelet
+
+- name: Install kubeadm and friends
+  become: yes
+  apt:
+    update_cache: yes
+    state: present
+    name: "{{ item }}={{ kubernetes_version }}-00"
+  loop:
+    - kubelet
+    - kubeadm
+

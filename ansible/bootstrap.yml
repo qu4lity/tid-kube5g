@@ -1,0 +1,10 @@
+---
+- name: Bootstrap cloned image
+  tags: bootstap
+  hosts: target
+  gather_facts: yes
+  vars:
+    apt_updated: "0"
+  roles:
+    - bootstrap
+    - software

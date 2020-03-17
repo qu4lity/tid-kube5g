@@ -1,0 +1,29 @@
+[target]
+k8s.local want_kubernetes_master=True want_calico=True
+k8s-worker1.local want_kubernetes_worker=True
+k8s-worker2.local want_kubernetes_worker=True
+k8s-worker3.local want_kubernetes_worker=True
+
+[target:vars]
+want_terraform=False
+want_packer=False
+want_vagrant=False
+want_docker=True
+want_crio=False
+want_libvirt=False
+want_kubernetes=True
+want_kubernetes_master=False
+want_kubernetes_worker=False
+want_calico=False
+want_ansible=False
+want_voltha=False
+
+github_user=your_github_username
+ansible_user=sysadmin
+ansible_password=SetecAstronomy
+ansible_become_password=SetecAstronomy
+ansible_python_interpreter=/usr/bin/python3
+
+kubernetes_version='1.17.4'
+docker_version='19.03.6-0ubuntu1~18.04.1'
+pod_network_cidr='192.168.0.0/16'
