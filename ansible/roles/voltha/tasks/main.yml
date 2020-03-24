@@ -6,29 +6,38 @@
     state: latest
     update_cache: yes
   loop:
-    - python-pip
-    - net-tools
-    - virtualenv
-    - libpcap-dev
-    - docker-compose
+    - curl
+    - jq
 
-- name: Install pip dependencies
-  become: yes
-  pip:
-    executable: /usr/bin/pip
-    name: "{{ item }}"
-    state: latest
-  loop:
-    - netifaces
-    - netaddr
+- name: Ensure ~/.kube/config exists
+  file:
+    state: directory
+    path: ~/.kube/
 
-- name: Clone Voltha repository to tag 'help'
+- name: Upload kube.config
+  copy:
+    src: kube.config
+    dest: ~/.kube/config
+    mode: 0644
+
+- name: Clone Voltha repository
   git:
-    repo: 'https://github.com/opencord/voltha.git'
-    dest: ~/voltha
+    repo: 'https://github.com/ciena/kind-voltha'
+    dest: ~/kind-voltha
     version: master
 
-- name: Build images
-  shell: source ~/voltha/env.sh && cd ~/voltha/ && make install-protoc && make fetch && make build
-  args:
-     executable: /bin/bash
+- name: Include kind-voltha binaries in path
+  lineinfile:
+    path: ~/.profile
+    state: present
+    insertafter: EOF
+    line: 'PATH=~/kind-voltha/bin:$PATH'
+
+- name: Prepare Voltha deployment script
+  copy:
+    content: |
+             #!/usr/bin/env bash
+             #source releases/voltha-2.2
+             TYPE=minimal DEPLOY_K8S=n WITH_BBSIM=y WITH_RADIUS=y CONFIG_SADIS=y ./voltha up
+    dest: ~/kind-voltha/launch-script.sh
+    mode: 0755
