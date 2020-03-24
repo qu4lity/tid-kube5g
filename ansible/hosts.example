@@ -27,3 +27,5 @@ ansible_python_interpreter=/usr/bin/python3
 kubernetes_version='1.17.4'
 docker_version='19.03.6-0ubuntu1~18.04.1'
 pod_network_cidr='192.168.0.0/16'
+metallb_ip_pool='192.168.1.100-192.168.1.110'
+apiserver_port_range='30000-64000'

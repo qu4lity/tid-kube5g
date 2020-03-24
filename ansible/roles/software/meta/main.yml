@@ -23,6 +23,8 @@ dependencies:
       when: want_kubernetes_master is defined and want_kubernetes_master
     - role: calico
       when: want_calico is defined and want_calico
+    - role: metallb
+      when: want_metallb is defined and want_metallb
     - role: kubernetes-worker
       when: want_kubernetes_worker is defined and want_kubernetes_worker
     - role: voltha

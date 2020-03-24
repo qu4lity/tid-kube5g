@@ -8,4 +8,4 @@ Then launch playbook:
 ansible-playbook bootstrap.yml
 
 ## Caveat:
-- For Calico role you need to pip3 install --user openshift
+- For Calico and MetalLB roles you need to pip3 install --user openshift
