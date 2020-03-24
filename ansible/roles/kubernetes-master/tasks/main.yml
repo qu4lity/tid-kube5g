@@ -7,7 +7,7 @@
 - name: Init Kubernetes master
   become: yes
   shell: kubeadm init --pod-network-cidr={{ pod_network_cidr }} --kubernetes-version={{ kubernetes_version}}
-  when: apiserver_check.rc != 8
+  when: "{{ apiserver_check.rc != 8 }}"
 
 - name: Set cluster token variable
   become: yes
