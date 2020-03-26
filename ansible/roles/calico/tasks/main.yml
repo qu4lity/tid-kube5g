@@ -1,9 +1,8 @@
 ---
-- name: Download Calico SDN manifest
-  get_url:
-    url: https://docs.projectcalico.org/manifests/calico.yaml
+- name: Setup calico CIDR
+  template:
+    src: calico.yaml.j2
     dest: /tmp/calico.yaml
-    validate_certs: no
   delegate_to: localhost
 
 - name: Deploy Calico SDN
