@@ -40,6 +40,9 @@ want_libvirt=False
 want_docker=True
 want_crio=False
 
+# Networking
+want_multinic=False
+
 # VOLTHA
 want_voltha=False
 
