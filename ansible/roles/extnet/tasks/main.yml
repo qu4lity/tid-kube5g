@@ -1,0 +1,4 @@
+- name: extnet parent ifup
+  become: yes
+  shell:
+    cmd: ip link set enp9s0 up
