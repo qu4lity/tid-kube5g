@@ -1,7 +1,8 @@
 CONTEXT = [
   NETWORK = "YES",
-  USER = "sysadmin",
-  SSH_PUBLIC_KEY = "${file("id_rsa.pub")}" ]
+  USERNAME = "sysadmin",
+  SSH_PUBLIC_KEY = "${file("~/.ssh/id_rsa.pub")}"
+]
 CPU = "9"
 VCPU = "2"
 CPU_MODEL = [
