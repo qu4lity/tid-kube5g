@@ -18,3 +18,16 @@
   apt:
     name: software-properties-common
     state: latest
+
+- name: Install vlan
+  become: yes
+  apt:
+    name: vlan
+    state:latest
+
+- name: Delete ufw
+  become: yes
+  apt:
+    name: ufw
+    purge: yes
+    state: absent
