@@ -23,7 +23,7 @@
   become: yes
   apt:
     name: vlan
-    state:latest
+    state: latest
 
 - name: Delete ufw
   become: yes

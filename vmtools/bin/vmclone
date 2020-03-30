@@ -23,6 +23,5 @@ sudo virt-sysprep                           \
 sudo virt-customize                        \
   --connect qemu:///system                 \
   --add $LIBVIRT/$TARGET.qcow2             \
-  --uninstall 'ufw'                        \
   --run-command                            \
      'dpkg-reconfigure openssh-server'
