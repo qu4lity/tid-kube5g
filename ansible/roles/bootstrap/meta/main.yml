@@ -5,3 +5,5 @@ dependencies:
     - sudo
     - user
     - apt
+    - role: extnet
+      when: want_multinic is defined and want_multinic

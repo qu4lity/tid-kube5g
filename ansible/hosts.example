@@ -7,7 +7,7 @@ sandbox.local want_kubernetes=False
 sandbox.local want_kubernetes=False want_terraform=True want_packer=True want_vagrant=True want_libvirt=True want_ansible=True
 
 # Kubernetes cluster with Docker
-k8s.local want_kubernetes_master=True want_calico=True
+k8s.local want_kubernetes_master=True want_calico=True want_multus=False
 k8s-worker1.local want_kubernetes_worker=True
 k8s-worker2.local want_kubernetes_worker=True
 k8s-worker3.local want_kubernetes_worker=True
@@ -39,6 +39,10 @@ want_libvirt=False
 # Container runtime
 want_docker=True
 want_crio=False
+
+# Networking
+want_multinic=False
+want_multus=False
 
 # VOLTHA
 want_voltha=False

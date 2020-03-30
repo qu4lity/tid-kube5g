@@ -29,5 +29,7 @@ dependencies:
       when: want_metallb is defined and want_metallb
     - role: kubernetes-worker
       when: want_kubernetes_worker is defined and want_kubernetes_worker
+    - role: multus
+      when: want_multus is defined and want_multus
     - role: voltha
       when: want_voltha is defined and want_voltha
