@@ -1,14 +1,15 @@
 CONTEXT = [
   NETWORK = "YES",
   USERNAME = "sysadmin",
-  SSH_PUBLIC_KEY = "${file("~/.ssh/id_rsa.pub")}"
+  SSH_PUBLIC_KEY = "${file("~/.ssh/id_rsa.pub")}",
+  SET_HOSTNAME = "$NAME"
 ]
-CPU = "4"
+CPU = "8"
 VCPU = "8"
 CPU_MODEL = [
   MODEL = "host-passthrough" ]
 DISK = [
-  IMAGE = "ubuntu_18.04",
+  IMAGE = "Ubuntu 18.04from market",
   IMAGE_UNAME = "oneadmin",
   SIZE = "20480" ]
 GRAPHICS = [
@@ -22,6 +23,5 @@ NIC = [
   NETWORK_UNAME = "oneadmin",
   SECURITY_GROUPS = "0" ]
 OS = [
-  ARCH = "x86_64",
-  BOOT = "" ]
-SCHED_REQUIREMENTS = "ID=\"0\""
+  ARCH = "x86_64" ]
+SCHED_REQUIREMENTS = "ID=\"1\""
