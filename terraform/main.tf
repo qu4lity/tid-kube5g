@@ -16,21 +16,49 @@ resource "opennebula_template" "one-kube-template" {
 }
 
 
-resource "opennebula_virtual_machine" "kube-node" {
-        name = "tf-kube-node${count.index}"
+resource "opennebula_virtual_machine" "kube-master" {
+        name = "tf-kube-master"
+        template_id = "${opennebula_template.one-kube-template.id}"
+        permissions = "600"
+}
+
+
+resource "opennebula_virtual_machine" "kube-worker" {
+        name = "tf-kube-worker${count.index}"
         template_id = "${opennebula_template.one-kube-template.id}"
         permissions = "600"
         # number of cluster nodes
-        count = 3
+        count = 2
 }
 
-output "kube-node-vm_id" {
-        value = "${opennebula_virtual_machine.kube-node.*.id}"
+resource "opennebula_virtual_machine" "voltha-demo-node" {
+        name = "tf-voltha-demo"
+        template_id = "${opennebula_template.one-kube-template.id}"
+        permissions = "600"
 }
 
-output "kube-node-vm_ip" {
-        value = "${opennebula_virtual_machine.kube-node.*.ip}"
+output "tf-kube-master-vm_id" {
+        value = "${opennebula_virtual_machine.kube-master.id}"
 }
 
+output "tf-kube-master-vm_ip" {
+        value = "${opennebula_virtual_machine.kube-master.ip}"
+}
+
+output "kube-worker-vm_id" {
+        value = "${opennebula_virtual_machine.kube-worker.*.id}"
+}
+
+output "kube-worker-vm_ip" {
+        value = "${opennebula_virtual_machine.kube-worker.*.ip}"
+}
+
+output "voltha-demo-node-vm_id" {
+        value = "${opennebula_virtual_machine.voltha-demo-node.id}"
+}
+
+output "voltha-demo-node-vm_ip" {
+        value = "${opennebula_virtual_machine.voltha-demo-node.ip}"
+}
 
 
