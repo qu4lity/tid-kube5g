@@ -1,0 +1,11 @@
+---
+- name: Bootstrap cloned image
+  tags: bootstap
+  hosts: target
+  gather_facts: yes
+  vars:
+    apt_updated: "0"
+  roles:
+    - bootstrap
+    - role: kvmhost
+      when: want_kvmhost is defined and want_kvmhost

@@ -1,0 +1,36 @@
+---
+- name: Purge netplan.io
+  become: yes
+  apt:
+   name: netplan.io
+   state: absent
+
+- name: Install bridge utilities
+  become: yes
+  apt:
+    name: bridge-utils
+    state: latest
+
+- name: Setup a bridge "{{ bridge_name }}"
+  become: yes
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/network/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - 10-br.netdev
+    - 10-br.network
+    - 10-wired.network
+
+
+- name: Enable systemd-{networking, resolved}
+  become: yes
+  shell: systemctl enable systemd-networkd systemd-resolved
+
+- name: Reboot system
+  become: yes
+  reboot:
+    reboot_timeout: 10
+  ignore_errors: yes
