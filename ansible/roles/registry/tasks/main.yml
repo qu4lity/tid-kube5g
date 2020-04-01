@@ -1,0 +1,21 @@
+---
+- name: Ensure /srv/registry exists
+  become: yes
+  file:
+    path: /srv/registry
+    state: directory
+
+- name: Install systemd service file
+  become: yes
+  template:
+    src: registry.service.j2
+    dest: /etc/systemd/system/registry.service
+    mode: 0644
+
+- name: Enable registry service
+  become: yes
+  systemd:
+    state: started
+    name: registry
+    enabled: yes
+    daemon_reload: yes

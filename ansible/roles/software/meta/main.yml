@@ -33,3 +33,5 @@ dependencies:
       when: want_multus is defined and want_multus
     - role: voltha
       when: want_voltha is defined and want_voltha
+    - role: registry
+      when: want_registry is defined and want_registry

@@ -18,7 +18,10 @@ k8s-worker1.local want_kubernetes_worker=True want_docker=False want_crio=True
 k8s-worker2.local want_kubernetes_worker=True want_docker=False want_crio=True
 k8s-worker3.local want_kubernetes_worker=True want_docker=False want_crio=True
 
-$ VOLTHA operator
+# Docker registry
+registry.local want_registry=True
+
+# VOLTHA operator
 voltha.local want_kubernetes=False want_voltha=True
 
 [target:vars]
