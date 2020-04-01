@@ -17,18 +17,16 @@ dependencies:
       when: want_crio is defined and want_crio
     - role: libvirt
       when: want_libvirt is defined and want_libvirt
-    - role: kubernetes
-      when: want_kubernetes is defined and want_kubernetes
     - role: kubernetes-master
       when: want_kubernetes_master is defined and want_kubernetes_master
+    - role: kubernetes-worker
+      when: want_kubernetes_worker is defined and want_kubernetes_worker
     - role: calico
       when: want_calico is defined and want_calico
     - role: flannel
       when: want_flannel is defined and want_flannel
     - role: metallb
       when: want_metallb is defined and want_metallb
-    - role: kubernetes-worker
-      when: want_kubernetes_worker is defined and want_kubernetes_worker
     - role: multus
       when: want_multus is defined and want_multus
     - role: voltha

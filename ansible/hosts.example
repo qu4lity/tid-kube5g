@@ -1,7 +1,7 @@
 [target]
 
 # Standard Ubuntu 18.04 server
-sandbox.local want_kubernetes=False
+sandbox.local
 
 # Developer Ubuntu 18.04 server with some extra tools
 sandbox.local want_kubernetes=False want_terraform=True want_packer=True want_vagrant=True want_libvirt=True want_ansible=True
@@ -22,7 +22,7 @@ k8s-worker3.local want_kubernetes_worker=True want_docker=False want_crio=True
 registry.local want_registry=True
 
 # VOLTHA operator
-voltha.local want_kubernetes=False want_voltha=True
+voltha.local want_voltha=True
 
 [target:vars]
 # Globals
@@ -51,7 +51,6 @@ want_multus=False
 want_voltha=False
 
 # Kubernetes profiles (these should remain as they are, to be specialized in the host declaration)
-want_kubernetes=True
 want_kubernetes_master=False
 want_kubernetes_worker=False
 want_calico=False
