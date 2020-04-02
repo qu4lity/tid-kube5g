@@ -4,3 +4,74 @@
   apt:
     name: nfs-common
     state: latest
+
+- name: make volume
+  become: yes
+  file:
+    path: '/opt/volA'
+    state: directory
+    recurse: yes
+    mode: '1777'
+
+- name: make volume
+  become: yes
+  file:
+    path: '/opt/volB'
+    state: directory
+    recurse: yes
+    mode: '1777'
+
+- name: make volume
+  become: yes
+  file:
+    path: '/opt/volC'
+    state: directory
+    mode: '1777'
+
+- name: make pv
+  k8s:
+    state: present
+    kind: PersistentVolume
+    metadata:
+      name: pvvol-1
+    src: pvol-sgw.yaml
+
+- name: make pv
+  k8s:
+    state: present
+    kind: PersistentVolume
+    metadata:
+      name: pvvol-2
+    src: pvol-pgw.yaml
+
+- name: make pv
+  k8s:
+    state: present
+    kind: PersistentVolume
+    metadata:
+      name: pvvol-3
+    src: pvol-pcrf.yaml
+
+- name: make pvc
+  k8s:
+    state: present
+    kind: PersistentVolumeClaim
+    metadata:
+      name: pvvol-1
+    src: sgw-claim0-persistentvolumeclaim.yaml
+
+- name: make pvc
+  k8s:
+    state: present
+    kind: PersistentVolumeClaim
+    metadata:
+      name: pvvol-2
+    src: pgw-claim0-persistentvolumeclaim.yaml
+
+- name: make pvc
+  k8s:
+    state: present
+    kind: PersistentVolumeClaim
+    metadata:
+      name: pvvol-3
+    src: pcrf-claim0-persistentvolumeclaim.yaml
