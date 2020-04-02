@@ -25,6 +25,20 @@
     name: vlan
     state: latest
 
+- name: Install nfs agent
+  become: yes
+  apt:
+    name: nfs-common
+    state: latest
+    when: "'workers' in {{group_names}}"
+
+- name: Install nfs kernel
+  become: yes
+  apt:
+    name: nfs-kernel-server
+    state: latest
+    when: "'master' in {{group_names}}"
+
 - name: Delete ufw
   become: yes
   apt:
