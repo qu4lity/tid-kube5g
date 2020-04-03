@@ -12,14 +12,14 @@ k8s-worker1.local want_kubernetes_worker=True want_demo=True
 k8s-worker2.local want_kubernetes_worker=True want_demo=True
 k8s-worker3.local want_kubernetes_worker=True want_demo=True
 
-# Kubernetes cluster with Docker
+# Kubernetes cluster with Docker, Flannel and Multus
 k8s.local want_kubernetes_master=True want_calico=True want_multus=False
 k8s-worker1.local want_kubernetes_worker=True
 k8s-worker2.local want_kubernetes_worker=True
 k8s-worker3.local want_kubernetes_worker=True
 
-# Kubernetes cluster with CRI-O
-k8s.local want_kubernetes_master=True want_calico=True want_docker=False want_crio=True
+# Kubernetes cluster with CRI-O, Calico and MetalLB
+k8s.local want_kubernetes_master=True want_calico=True want_docker=False want_crio=True want_metallb=True
 k8s-worker1.local want_kubernetes_worker=True want_docker=False want_crio=True
 k8s-worker2.local want_kubernetes_worker=True want_docker=False want_crio=True
 k8s-worker3.local want_kubernetes_worker=True want_docker=False want_crio=True
@@ -52,6 +52,7 @@ want_crio=False
 # Networking
 want_multinic=False
 want_multus=False
+want_metallb=False
 
 # VOLTHA
 want_voltha=False
