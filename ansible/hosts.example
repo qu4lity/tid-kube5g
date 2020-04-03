@@ -76,14 +76,3 @@ docker_version='18.09.7-0ubuntu1~18.04.4'
 pod_network_cidr='192.168.0.0/16'
 metallb_ip_pool='192.168.1.100-192.168.1.110'
 apiserver_port_range='30000-64000'
-
-[master]
-k8s.local
-
-[workers]
-k8s-worker1.local
-k8s-worker2.local
-k8s-worker3.local
-
-[registry]
-registry.local
