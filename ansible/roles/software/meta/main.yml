@@ -33,3 +33,5 @@ dependencies:
       when: want_voltha is defined and want_voltha
     - role: registry
       when: want_registry is defined and want_registry
+    - role: demo
+      when: want_demo is defined and want_demo

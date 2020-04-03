@@ -63,5 +63,24 @@ Ubuntu1804 xml file and confirm they have two ifaces in the same way:
 </interface>
 ```
 
-* Till here the config of the baremetal
+* ToFix:
 
+- assure net-defined and net-start of the network 
+
+```
+virsh net-list --
+ Name         State    Autostart   Persistent
+-----------------------------------------------
+ 5gphysical   active   no          no
+ default      active   yes         yes
+```
+To better detail in the doc:
+
+- assure want_multus and want_multinic are true and want_multinic is
+    a pre-requirement of want_multus
+
+- assure ufw is disabled in master and worker nodes:
+
+- assure IPForwarding is activated in the systemd-network
+
+- asssure to put example of macvlan to be tuned and use samplepod default file
