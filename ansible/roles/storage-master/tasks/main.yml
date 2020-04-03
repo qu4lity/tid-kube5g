@@ -30,48 +30,60 @@
 
 - name: make pv
   k8s:
+    kubeconfig: kube.config
     state: present
-    kind: PersistentVolume
-    metadata:
-      name: pvvol-1
-    src: pvol-sgw.yaml
+    definition:
+      kind: PersistentVolume
+      metadata:
+        name: pvvol-1
+      src: pvol-sgw.yaml
 
 - name: make pv
   k8s:
+    kubeconfig: kube.config
     state: present
-    kind: PersistentVolume
-    metadata:
-      name: pvvol-2
-    src: pvol-pgw.yaml
+    definition:
+      kind: PersistentVolume
+      metadata:
+        name: pvvol-2
+      src: pvol-pgw.yaml
 
 - name: make pv
   k8s:
+    kubeconfig: kube.config
     state: present
-    kind: PersistentVolume
-    metadata:
-      name: pvvol-3
-    src: pvol-pcrf.yaml
+    definition: 
+      kind: PersistentVolume
+      metadata:
+        name: pvvol-3
+      src: pvol-pcrf.yaml
 
-- name: make pvc
+- name: pv claim
   k8s:
+    kubeconfig: kube.config
     state: present
-    kind: PersistentVolumeClaim
-    metadata:
-      name: pvvol-1
-    src: sgw-claim0-persistentvolumeclaim.yaml
+    definition:
+      kind: PersistentVolumeClaim
+      metadata:
+        name: pvvol-1
+      src: sgw-claim0-persistentvolumeclaim.yaml
 
-- name: make pvc
+- name: pv claim
   k8s:
+    kubeconfig: kube.config
     state: present
-    kind: PersistentVolumeClaim
-    metadata:
-      name: pvvol-2
-    src: pgw-claim0-persistentvolumeclaim.yaml
+    definition:
+      kind: PersistentVolumeClaim
+      metadata:
+        name: pvvol-2
+      src: pgw-claim0-persistentvolumeclaim.yaml
 
-- name: make pvc
+- name: pv claim
   k8s:
+    kubeconfig: kube.config
     state: present
-    kind: PersistentVolumeClaim
-    metadata:
-      name: pvvol-3
-    src: pcrf-claim0-persistentvolumeclaim.yaml
+    definition:
+      kind: PersistentVolumeClaim
+      metadata:
+        name: pvvol-3
+      src: pcrf-claim0-persistentvolumeclaim.yaml
