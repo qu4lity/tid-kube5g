@@ -10,4 +10,4 @@
     kubeadm join --token={{ hostvars['localhost']['k8s_token'] }}
     --discovery-token-ca-cert-hash sha256:{{ hostvars['localhost']['k8s_cert'] }}
     {{ hostvars['localhost']['k8s_master_api'] }}
-  when: "{{ kubelet_check.rc != 8 }}"
+  when: "{{ kubelet_check.rc != 4 }}"
