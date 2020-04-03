@@ -1,14 +1,16 @@
 ---
 - name: Check if master is already initialized
-  command: wget 127.0.0.1:6443
+  wait_for:
+    port: 6443
+    state: present
+    timeout: 10
   register: apiserver_check
   ignore_errors: true
 
 - name: Init Kubernetes master
   become: yes
   shell: kubeadm init --pod-network-cidr={{ pod_network_cidr }} --kubernetes-version={{ kubernetes_version}}
-  when: "{{ apiserver_check.rc != 8 }}"
-  ignore_errors: true
+  when: "{{ apiserver_check.failed }}"
 
 - name: Set cluster token variable
   become: yes
