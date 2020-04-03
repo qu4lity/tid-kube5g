@@ -64,8 +64,8 @@ want_kubernetes_master=False
 want_kubernetes_worker=False
 want_calico=False
 
-# Kubernetes 1.17
-kubernetes_version='1.17.4'
+# Kubernetes 1.18
+kubernetes_version='1.18.0'
 docker_version='19.03.6-0ubuntu1~18.04.1'
 
 # Kubernetes 1.15
