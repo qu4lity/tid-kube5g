@@ -1,0 +1,9 @@
+- name: Run demo dependencies on master
+  include_role:
+    name: storage_master
+  when: want_kubernetes_master is defined and want_kubernetes_master
+
+- name: Run demo dependencies on workers
+  include_role:
+    name: storage_worker
+  when: want_kubernetes_worker is defined and want_kubernetes_worker
