@@ -28,15 +28,27 @@
     state: directory
     mode: '1777'
 
-- name: make pv
+- name: make pv1
   k8s:
     kubeconfig: kube.config
     state: present
     definition:
+      apiVersion: v1
       kind: PersistentVolume
       metadata:
-        name: pvvol-1
-      src: pvol-sgw.yaml
+        name: pvol-1
+      spec:
+        capacity:
+          storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      volumeMode: Filesystem
+      nfs:
+        path: /opt/volA
+        server: k8s.local
+        readOnly: false
+  delegate_to: localhost
 
 - name: make pv
   k8s:
@@ -47,6 +59,7 @@
       metadata:
         name: pvvol-2
       src: pvol-pgw.yaml
+  delegate_to: localhost
 
 - name: make pv
   k8s:
@@ -57,6 +70,7 @@
       metadata:
         name: pvvol-3
       src: pvol-pcrf.yaml
+  delegate_to: localhost
 
 - name: pv claim
   k8s:
@@ -67,6 +81,7 @@
       metadata:
         name: pvvol-1
       src: sgw-claim0-persistentvolumeclaim.yaml
+  delegate_to: localhost
 
 - name: pv claim
   k8s:
@@ -77,6 +92,7 @@
       metadata:
         name: pvvol-2
       src: pgw-claim0-persistentvolumeclaim.yaml
+  delegate_to: localhost
 
 - name: pv claim
   k8s:
@@ -87,3 +103,4 @@
       metadata:
         name: pvvol-3
       src: pcrf-claim0-persistentvolumeclaim.yaml
+  delegate_to: localhost
