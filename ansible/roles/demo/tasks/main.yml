@@ -3,11 +3,6 @@
     name: storage-master
   when: want_kubernetes_master is defined and want_kubernetes_master
 
-- name: Run demo dependencies on workers
-  include_role:
-    name: storage-worker
-  when: want_kubernetes_worker is defined and want_kubernetes_worker
-
 - name: get github code
   become: true
   git:
@@ -60,3 +55,8 @@
   become: yes
   command: exportfs -ra
   when: want_kubernetes_master is defined and want_kubernetes_master
+
+- name: Run demo dependencies on workers
+  include_role:
+    name: storage-worker
+  when: want_kubernetes_worker is defined and want_kubernetes_worker

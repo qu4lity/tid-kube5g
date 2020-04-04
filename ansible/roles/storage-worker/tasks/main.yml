@@ -4,3 +4,33 @@
   apt:
     name: nfs-common
     state: latest
+
+- name: Mount and bind a volume
+  become: yes
+  mount:
+    path: k8s.local:/opt/volA/cfg
+    src: /mnt
+    opts: bind
+    state: mounted
+    fstype: none
+  delegate_to: k8s-worker1.local
+
+- name: Mount and bind a volume
+  become: yes
+  mount:
+    path: k8s.local:/opt/volB/cfg
+    src: /mnt
+    opts: bind
+    state: mounted
+    fstype: none
+  delegate_to: k8s-worker2.local
+
+- name: Mount and bind a volume
+  become: yes
+  mount:
+    path: k8s.local:/opt/volC/cfg
+    src: /mnt
+    opts: bind
+    state: mounted
+    fstype: none
+  delegate_to: k8s-worker3.local
