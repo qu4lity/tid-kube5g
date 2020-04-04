@@ -7,3 +7,56 @@
   include_role:
     name: storage-worker
   when: want_kubernetes_worker is defined and want_kubernetes_worker
+
+- name: get github code
+  become: true
+  git:
+    repo: 'https://github.com/jnunyez/docker-open5gs.git'
+    dest: /srv/open5gs
+  when: want_kubernetes_master is defined and want_kubernetes_master
+
+- name: Copy file with owner and permissions
+  become: true
+  copy:
+    src: cfg
+    dest: /opt/volA
+    owner: sysadmin
+    group: root
+    mode: '0644'
+  when: want_kubernetes_master is defined and want_kubernetes_master
+
+- name: Copy file with owner and permissions
+  become: true
+  copy:
+    src: cfg
+    dest: /opt/volB
+    owner: sysadmin
+    group: root
+    mode: '0644'
+  when: want_kubernetes_master is defined and want_kubernetes_master
+
+- name: Copy file with owner and permissions
+  become: true
+  copy:
+    src: cfg
+    dest: /opt/volC
+    owner: sysadmin
+    group: root
+    mode: '0644'
+  when: want_kubernetes_master is defined and want_kubernetes_master
+
+- name: Export filesystem
+  become: yes
+  template:
+    src: "exports.j2"
+    dest: "/etc/exports"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  delegate_to: localhost
+  when: want_kubernetes_master is defined and want_kubernetes_master
+
+- name: Transfer NFS
+  become: yes
+  command: exportfs -ra
+  when: want_kubernetes_master is defined and want_kubernetes_master
