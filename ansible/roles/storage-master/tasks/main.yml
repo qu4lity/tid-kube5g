@@ -28,7 +28,7 @@
     state: directory
     mode: '1777'
 
-- name: make pv1
+- name: create pv1
   k8s:
     kubeconfig: kube.config
     state: present
@@ -50,26 +50,48 @@
         readOnly: false
   delegate_to: localhost
 
-- name: make pv
+- name: create pv2
   k8s:
     kubeconfig: kube.config
     state: present
     definition:
+      apiVersion: v1
       kind: PersistentVolume
       metadata:
-        name: pvvol-2
-      src: pvol-pgw.yaml
+        name: pvol-2
+      spec:
+        capacity:
+          storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      volumeMode: Filesystem
+      nfs:
+        path: /opt/volB
+        server: k8s.local
+        readOnly: false
   delegate_to: localhost
 
-- name: make pv
+- name: create pv3
   k8s:
     kubeconfig: kube.config
     state: present
-    definition: 
+    definition:
+      apiVersion: v1
       kind: PersistentVolume
       metadata:
-        name: pvvol-3
-      src: pvol-pcrf.yaml
+        name: pvol-3
+      spec:
+        capacity:
+          storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      volumeMode: Filesystem
+      nfs:
+        path: /opt/volC
+        server: k8s.local
+        readOnly: false
   delegate_to: localhost
 
 - name: pv claim
@@ -77,10 +99,22 @@
     kubeconfig: kube.config
     state: present
     definition:
+      apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
-        name: pvvol-1
-      src: sgw-claim0-persistentvolumeclaim.yaml
+        creationTimestamp: null
+        name: sgw-claim0
+        namespace: default
+      labels:
+        io.kompose.service: sgw-claim0
+        name: sgw-claim0
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+        volumeMode: Filesystem
   delegate_to: localhost
 
 - name: pv claim
@@ -88,10 +122,22 @@
     kubeconfig: kube.config
     state: present
     definition:
+          apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
-        name: pvvol-2
-      src: pgw-claim0-persistentvolumeclaim.yaml
+        creationTimestamp: null
+        name: sgw-claim0
+        namespace: default
+      labels:
+        io.kompose.service: pgw-claim0
+        name: pgw-claim0
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+        volumeMode: Filesystem
   delegate_to: localhost
 
 - name: pv claim
@@ -99,8 +145,20 @@
     kubeconfig: kube.config
     state: present
     definition:
+          apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
-        name: pvvol-3
-      src: pcrf-claim0-persistentvolumeclaim.yaml
+        creationTimestamp: null
+        name: pcrf-claim0
+        namespace: default
+      labels:
+        io.kompose.service: pcrf-claim0
+        name: pcrf-claim0
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+        volumeMode: Filesystem
   delegate_to: localhost
