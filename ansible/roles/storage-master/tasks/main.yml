@@ -40,14 +40,14 @@
       spec:
         capacity:
           storage: 1Gi
-      accessModes:
-        - ReadWriteOnce
-      persistentVolumeReclaimPolicy: Retain
-      volumeMode: Filesystem
-      nfs:
-        path: /opt/volA
-        server: k8s.local
-        readOnly: false
+        accessModes:
+          - ReadWriteOnce
+        persistentVolumeReclaimPolicy: Retain
+        volumeMode: Filesystem
+        nfs:
+          path: /opt/volA
+          server: k8s.local
+          readOnly: false
   delegate_to: localhost
 
 - name: create pv2
@@ -62,14 +62,14 @@
       spec:
         capacity:
           storage: 1Gi
-      accessModes:
-        - ReadWriteOnce
-      persistentVolumeReclaimPolicy: Retain
-      volumeMode: Filesystem
-      nfs:
-        path: /opt/volB
-        server: k8s.local
-        readOnly: false
+        accessModes:
+          - ReadWriteOnce
+        persistentVolumeReclaimPolicy: Retain
+        volumeMode: Filesystem
+        nfs:
+          path: /opt/volB
+          server: k8s.local
+          readOnly: false
   delegate_to: localhost
 
 - name: create pv3
@@ -84,14 +84,14 @@
       spec:
         capacity:
           storage: 1Gi
-      accessModes:
-        - ReadWriteOnce
-      persistentVolumeReclaimPolicy: Retain
-      volumeMode: Filesystem
-      nfs:
-        path: /opt/volC
-        server: k8s.local
-        readOnly: false
+        accessModes:
+          - ReadWriteOnce
+        persistentVolumeReclaimPolicy: Retain
+        volumeMode: Filesystem
+        nfs:
+          path: /opt/volC
+          server: k8s.local
+          readOnly: false
   delegate_to: localhost
 
 - name: pv claim
@@ -122,11 +122,11 @@
     kubeconfig: kube.config
     state: present
     definition:
-          apiVersion: v1
+      apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
         creationTimestamp: null
-        name: sgw-claim0
+        name: pgw-claim0
         namespace: default
       labels:
         io.kompose.service: pgw-claim0
@@ -145,7 +145,7 @@
     kubeconfig: kube.config
     state: present
     definition:
-          apiVersion: v1
+      apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
         creationTimestamp: null
