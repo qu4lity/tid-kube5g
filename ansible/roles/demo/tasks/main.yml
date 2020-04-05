@@ -40,7 +40,7 @@
     mode: '0644'
   when: want_kubernetes_master is defined and want_kubernetes_master
 
-- name: Export filesystem
+- name: Exports newly created directories.
   become: yes
   template:
     src: "exports.j2"
@@ -48,7 +48,6 @@
     owner: "root"
     group: "root"
     mode: "0644"
-  delegate_to: localhost
   when: want_kubernetes_master is defined and want_kubernetes_master
 
 - name: Transfer NFS

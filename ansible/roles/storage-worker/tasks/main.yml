@@ -5,32 +5,29 @@
     name: nfs-common
     state: latest
 
-- name: Mount and bind a volume
+- name: Mount and bind a volume in worker1
   become: yes
   mount:
-    path: k8s.local:/opt/volA/cfg
-    src: /mnt
-    opts: bind
+    src: k8s.local:/opt/volA/cfg
+    path: /mnt
     state: mounted
-    fstype: none
-  delegate_to: k8s-worker1.local
+    fstype: nfs
+  when: inventory_hostname == "k8s-worker1.local"
 
-- name: Mount and bind a volume
+- name: Mount and bind a volume in worker2
   become: yes
   mount:
-    path: k8s.local:/opt/volB/cfg
-    src: /mnt
-    opts: bind
+    src: k8s.local:/opt/volB/cfg
+    path: /mnt
     state: mounted
-    fstype: none
-  delegate_to: k8s-worker2.local
+    fstype: nfs
+  when: inventory_hostname == "k8s-worker2.local"
 
-- name: Mount and bind a volume
+- name: Mount and bind a volume in worker3
   become: yes
   mount:
-    path: k8s.local:/opt/volC/cfg
-    src: /mnt
-    opts: bind
+    src: k8s.local:/opt/volC/cfg
+    path: /mnt
     state: mounted
-    fstype: none
-  delegate_to: k8s-worker3.local
+    fstype: nfs
+  when: inventory_hostname == "k8s-worker3.local"
