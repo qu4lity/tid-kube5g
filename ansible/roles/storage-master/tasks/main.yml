@@ -2,7 +2,7 @@
 - name: Install nfs kernel
   become: yes
   apt:
-    name: nfs-common
+    name: nfs-kernel-server
     state: latest
 
 - name: make volume

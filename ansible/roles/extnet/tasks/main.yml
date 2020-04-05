@@ -1,6 +1,9 @@
 - name: Find external interface
   set_fact:
-    external_interface: "{{ ansible_interfaces | difference(['lo',ansible_default_ipv4.alias]) | first }}"
+    external_interface: "{{ ansible_interfaces | difference(['lo',ansible_default_ipv4.interface]) | first }}"
+
+- debug:
+    msg: Gathered Interface is {{ external_interface }}
 
 - name: extnet parent ifup
   become: yes

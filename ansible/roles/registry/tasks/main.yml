@@ -1,4 +1,16 @@
 ---
+- name: install pip
+  become: yes
+  apt:
+    name: python3-pip
+    state: latest
+
+- name: install docker
+  become: yes
+  pip:
+    name: docker
+    state: latest
+
 - name: Ensure /srv/registry exists
   become: yes
   file:

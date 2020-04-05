@@ -1,3 +1,9 @@
+---
+- name: Push images on registry
+  include_role:
+    name: prepare-images
+  when: want_registry is defined and want_registry
+
 - name: Run demo dependencies on master
   include_role:
     name: storage-master
@@ -59,3 +65,7 @@
   include_role:
     name: storage-worker
   when: want_kubernetes_worker is defined and want_kubernetes_worker
+
+- name: Switch on nic to be external net
+  include_role:
+    name: extnet
