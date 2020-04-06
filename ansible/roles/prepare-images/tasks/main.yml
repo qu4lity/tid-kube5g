@@ -1,0 +1,12 @@
+---
+- name: tag sgw and push to local registry
+  shell: docker push registry.local:5000/config-diss-upf_sgw
+  delegate_to: localhost
+
+- name: tag sgw and push to local registry
+  shell: docker push registry.local:5000/config-diss-upf_pgw
+  delegate_to: localhost
+
+- name: tag sgw and push to local registry
+  shell: docker push registry.local:5000/config-diss-upf_pcrf
+  delegate_to: localhost
