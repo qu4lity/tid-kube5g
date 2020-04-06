@@ -17,7 +17,7 @@
 - name: Mount and bind a volume in worker2
   become: yes
   mount:
-    src: k8s.local:/opt/volB/cfg
+    src: k8s.local:/opt/volA/cfg
     path: /mnt
     fstype: nfs
     state: mounted
@@ -26,7 +26,7 @@
 - name: Mount and bind a volume in worker3
   become: yes
   mount:
-    src: k8s.local:/opt/volC/cfg
+    src: k8s.local:/opt/volA/cfg
     path: /mnt
     fstype: nfs
     state: mounted
