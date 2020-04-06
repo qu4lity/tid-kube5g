@@ -1,9 +1,18 @@
 ---
-- name: Setup multus
+- name: Setup multus for post k8s 16 version
   template:
     src: multus.yaml.j2
     dest: /tmp/multus.yaml
   delegate_to: localhost
+  when: kubernetes_version is defined and kubernetes_version is version('1.16.0', '>=') 
+
+
+- name: Setup multus for pre k8s 16 version
+  template:
+    src: multus-pre-1.16.yaml.j2
+    dest: /tmp/multus.yaml
+  delegate_to: localhost
+  when: kubernetes_version is defined and kubernetes_version is version('1.16.0', '<') 
 
 - name: Deploy Multus
   k8s:
