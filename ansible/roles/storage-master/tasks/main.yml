@@ -45,7 +45,7 @@
         persistentVolumeReclaimPolicy: Retain
         volumeMode: Filesystem
         nfs:
-          path: /opt/volA
+          path: /opt/volA/cfg
           server: k8s.local
           readOnly: false
   delegate_to: localhost
@@ -67,7 +67,7 @@
         persistentVolumeReclaimPolicy: Retain
         volumeMode: Filesystem
         nfs:
-          path: /opt/volB
+          path: /opt/volB/cfg
           server: k8s.local
           readOnly: false
   delegate_to: localhost
@@ -89,7 +89,7 @@
         persistentVolumeReclaimPolicy: Retain
         volumeMode: Filesystem
         nfs:
-          path: /opt/volC
+          path: /opt/volC/cfg
           server: k8s.local
           readOnly: false
   delegate_to: localhost
