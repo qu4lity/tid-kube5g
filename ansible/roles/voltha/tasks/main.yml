@@ -24,7 +24,7 @@
   git:
     repo: 'https://github.com/ciena/kind-voltha'
     dest: ~/kind-voltha
-    version: master
+    version: v2.2
 
 - name: Include kind-voltha binaries in path
   lineinfile:
@@ -33,11 +33,57 @@
     insertafter: EOF
     line: 'PATH=~/kind-voltha/bin:$PATH'
 
-- name: Prepare Voltha deployment script
+- name: Modified minimal-env.sh
   copy:
-    content: |
-             #!/usr/bin/env bash
-             source releases/voltha-2.3
-             TYPE=minimal DEPLOY_K8S=n WITH_BBSIM=y WITH_RADIUS=y CONFIG_SADIS=y ./voltha up
-    dest: ~/kind-voltha/launch-script.sh
-    mode: 0755
+    src: minimal-env.sh
+    dest: /home/sysadmin/kind-voltha/minimal-env.sh
+    mode: 0664
+
+- name: Modified minimal-values.yaml
+  copy:
+    src: minimal-values.yaml
+    dest: /home/sysadmin/kind-voltha/minimal-values.yaml
+    mode: 0664
+
+- name: Modified voltha script
+  copy:
+    src: voltha
+    dest: /home/sysadmin/kind-voltha/voltha
+    mode: 0775
+
+# - name: Prepare Voltha deployment script
+#   copy:
+#     content: |
+#              #!/usr/bin/env bash
+#              source releases/voltha-2.3
+#              TYPE=minimal DEPLOY_K8S=n WITH_BBSIM=y WITH_RADIUS=y CONFIG_SADIS=y ./voltha up
+#     dest: ~/kind-voltha/launch-script.sh
+#     mode: 0755
+
+- name: Create script to start Voltha & ONOS
+  blockinfile:
+    path: /home/sysadmin/kind-voltha/start_voltha_onos.sh
+    create: yes
+    marker: ""
+    mode: "1777"
+    block: |
+      #!/usr/bin/env bash
+      cd /home/sysadmin/kind-voltha/
+      rm -f started
+      export VOLTHA_CHART_VERSION=2.2.0
+      export VOLTHA_BBSIM_CHART_VERSION=3.0.7
+      export VOLTHA_ADAPTER_SIM_CHART_VERSION=2.2.3
+      export VOLTHA_ADAPTER_OPEN_OLT_CHART_VERSION=2.2.0
+      export VOLTHA_ADAPTER_OPEN_ONU_CHART_VERSION=2.2.0
+      export ONOS_CHART_VERSION=1.1.4
+      export DEPLOY_K8S=no
+      export WITH_ONOS=yes
+      source voltha up
+      touch started
+      echo "STARTED" > started
+
+- name: Up voltha and ONOS
+  shell:
+    cmd: "/home/sysadmin/kind-voltha/start_voltha_onos.sh"
+  args:
+    executable: /bin/bash
