@@ -1,15 +1,60 @@
 ---
-- name: install pip
+- name: Create certs directory
+  become: yes
+  file:
+    path: /etc/docker/certs.d/{{ inventory_hostname }}/
+    state: directory
+
+- name: Install python-pip3
   become: yes
   apt:
     name: python3-pip
     state: latest
 
-- name: install docker
+- name: Install python library cryptography
   become: yes
   pip:
-    name: docker
+    name: cryptography
     state: latest
+
+- name: Create private key
+  become: yes
+  openssl_privatekey:
+    path: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.key"
+    size: 4096
+
+- name: Create registry CSR
+  become: yes
+  openssl_csr:
+    common_name: "{{ inventory_hostname }}"
+    country_name: "ES"
+    email_address: "registrymaster@dev.null"
+    locality_name: "Europe"
+    organization_name: "Pollo Labs"
+    path: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.csr"
+    privatekey_path: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.key"
+
+- name: Create registry cert
+  become: yes
+  openssl_certificate:
+    csr_path: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.csr"
+    path: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.crt"
+    provider: selfsigned
+    privatekey_path: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.key"
+
+- name: Make both cert and crt extensions available # Docker registry uses crt, but docker service expects cert
+  become: yes
+  copy:
+    src: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.crt"
+    dest: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.cert"
+    remote_src: yes
+
+- name: Fetch registry certificate
+  become: yes
+  fetch:
+    src: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.crt"
+    dest: "{{ inventory_hostname }}.crt"
+    flat: yes
 
 - name: Ensure /srv/registry exists
   become: yes

@@ -11,6 +11,8 @@ dependencies:
       when: want_packer is defined and want_packer
     - role: vagrant
       when: want_vagrant is defined and want_vagrant
+    - role: registry
+      when: want_registry is defined and want_registry
     - role: docker
       when: want_docker is defined and want_docker
     - role: crio
@@ -31,7 +33,5 @@ dependencies:
       when: want_multus is defined and want_multus
     - role: voltha
       when: want_voltha is defined and want_voltha
-    - role: registry
-      when: want_registry is defined and want_registry
     - role: demo
       when: want_demo is defined and want_demo
