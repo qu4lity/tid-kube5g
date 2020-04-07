@@ -8,3 +8,4 @@
   roles:
     - bootstrap
     - software
+    - cleanup
