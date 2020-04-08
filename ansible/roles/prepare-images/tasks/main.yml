@@ -1,12 +1,41 @@
 ---
-- name: tag sgw and push to local registry
-  shell: docker push registry.local:5000/config-diss-upf_sgw
+- name: copy crt
+  become: yes
+  fetch:
+    flat: yes
+    src: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.crt"
+    dest: "/tmp/{{ inventory_hostname }}.crt"
+
+- name: copy 
+  become: yes
+  copy:
+    src: "/tmp/{{ inventory_hostname }}.crt"
+    dest: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.crt"
   delegate_to: localhost
 
 - name: tag sgw and push to local registry
-  shell: docker push registry.local:5000/config-diss-upf_pgw
+  docker_image:
+    name: registry.local/config-diss-upf_sgw 
+    tag: latest
+    state: present
+    pull: false
+    push: true
   delegate_to: localhost
 
-- name: tag sgw and push to local registry
-  shell: docker push registry.local:5000/config-diss-upf_pcrf
+- name: tag pgw and push to local registry
+  docker_image:
+    name: registry.local/config-diss-upf_pgw
+    tag: latest
+    state: present
+    pull: false
+    push: true
+  delegate_to: localhost
+
+- name: tag pcrf and push to local registry
+  docker_image:
+    name: registry.local/config-diss-upf_pcrf
+    tag: latest
+    state: present
+    pull: false
+    push: yes
   delegate_to: localhost
