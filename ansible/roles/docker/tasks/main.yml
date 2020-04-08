@@ -15,7 +15,7 @@
     groups: docker
     append: yes
 
-- name: setup cgroupdriver as systemd and allow insecure local registry
+- name: setup cgroupdriver as systemd
   become: yes
   template:
     src: "{{ item }}.j2"
@@ -32,3 +32,22 @@
     name: docker
     state: restarted
     enabled: yes
+
+- name: search registry certificate
+  shell: 'find . -name registry*.crt | cut -f 2 -d "/" | cut -f 1,2 -d "."'
+  register: registry_name
+  delegate_to: localhost
+
+- name: Ensure /etc/docker/certs.d/{{ registry_name.stdout }} exists if certificate exists
+  become: yes
+  file:
+    path: /etc/docker/certs.d/{{ registry_name.stdout }}
+    state: directory
+  when: registry_name.stdout
+
+- name: copy registry certificate if exists
+  become: yes
+  copy:
+    src: "{{ registry_name.stdout }}.crt"
+    dest: "/etc/docker/certs.d/{{ registry_name.stdout }}/{{ registry_name.stdout }}.crt"
+  when: registry_name.stdout

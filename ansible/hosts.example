@@ -45,8 +45,11 @@ want_vagrant=False
 want_ansible=False
 want_libvirt=False
 
-# Container runtime
+# Docker Container runtime
 want_docker=True
+want_registry=False
+
+# CRIO Container runtime
 want_crio=False
 
 # Networking
