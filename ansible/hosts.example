@@ -32,7 +32,7 @@ voltha.local want_voltha=True
 
 [target:vars]
 # Globals
-github_user=your_github_username
+github_user=<replace_with_your_github_username>
 ansible_user=sysadmin
 ansible_password=SetecAstronomy
 ansible_become_password=SetecAstronomy
