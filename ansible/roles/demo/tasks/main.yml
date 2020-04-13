@@ -69,3 +69,9 @@
 - name: Switch on nic to be external net
   include_role:
     name: extnet
+
+- name: Copy kube.config to /tmp for awesome-5g-hacking
+  copy:
+    src: kube.config
+    dest: /tmp/kube.config
+  delegate_to: localhost
