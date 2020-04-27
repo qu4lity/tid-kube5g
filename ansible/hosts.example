@@ -13,7 +13,7 @@ k8s-worker2.local want_kubernetes_worker=True want_demo=True
 k8s-worker3.local want_kubernetes_worker=True want_demo=True
 
 # Kubernetes cluster with Docker, Flannel and Multus
-k8s.local want_kubernetes_master=True want_calico=True want_multus=False
+k8s.local want_kubernetes_master=True want_flannel=True want_multus=False
 k8s-worker1.local want_kubernetes_worker=True
 k8s-worker2.local want_kubernetes_worker=True
 k8s-worker3.local want_kubernetes_worker=True
@@ -52,11 +52,6 @@ want_registry=False
 # CRIO Container runtime
 want_crio=False
 
-# Networking
-want_multinic=False
-want_multus=False
-want_metallb=False
-
 # VOLTHA
 want_voltha=False
 
@@ -66,10 +61,16 @@ want_demo=False
 # Kubernetes profiles (these should remain as they are, to be specialized in the host declaration)
 want_kubernetes_master=False
 want_kubernetes_worker=False
+
+# Kubernetes Networking
+want_multinic=False
+want_multus=False
+want_metallb=False
 want_calico=False
+want_flannel=False
 
 # Kubernetes 1.18
-kubernetes_version='1.18.0'
+kubernetes_version='1.18.2'
 docker_version='19.03.6-0ubuntu1~18.04.1'
 
 # Kubernetes 1.15
