@@ -9,7 +9,7 @@
 
 - name: Init Kubernetes master
   become: yes
-  shell: kubeadm init --pod-network-cidr={{ pod_network_cidr }} --kubernetes-version={{ kubernetes_version}}
+  shell: kubeadm init --pod-network-cidr={{ pod_network_cidr }} --kubernetes-version={{ kubernetes_version }}
   when: "{{ apiserver_check.failed }}"
 
 - name: Set cluster token variable
