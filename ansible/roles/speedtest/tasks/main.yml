@@ -1,0 +1,14 @@
+---
+- name: Deploy speedtest yaml 
+  template:
+    src: speedtest.yaml.j2
+    dest: /tmp/speedtest.yaml
+  delegate_to: localhost
+
+- name: Deploy speedtest
+  k8s:
+    kubeconfig: kube.config
+    state: present
+    src: /tmp/speedtest.yaml
+  delegate_to: localhost
+
