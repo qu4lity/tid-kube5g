@@ -35,3 +35,5 @@ dependencies:
       when: want_voltha is defined and want_voltha
     - role: demo
       when: want_demo is defined and want_demo
+    - role: speedtest
+      when: want_speedtest is defined and want_speedtest
