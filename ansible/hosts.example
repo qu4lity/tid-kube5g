@@ -1,38 +1,40 @@
 [target]
 
 # Standard Ubuntu 18.04 server
-sandbox.local
+#sandbox.local
 
 # Developer Ubuntu 18.04 server with some extra tools
-sandbox.local want_kubernetes=False want_terraform=True want_packer=True want_vagrant=True want_libvirt=True want_ansible=True
+#sandbox.local want_kubernetes=False want_terraform=True want_packer=True want_vagrant=True want_libvirt=True want_ansible=True
 
 # Kubernetes cluster with Docker for ONE CLICK DEMO
-k8s.local want_kubernetes_master=True want_flannel=True want_multus=True want_demo=True
-k8s-worker1.local want_kubernetes_worker=True want_demo=True
-k8s-worker2.local want_kubernetes_worker=True want_demo=True
-k8s-worker3.local want_kubernetes_worker=True want_demo=True
+#k8s.local want_kubernetes_master=True want_flannel=True want_multus=True want_demo=True
+#k8s-worker1.local want_kubernetes_worker=True want_demo=True
+#k8s-worker2.local want_kubernetes_worker=True want_demo=True
+#k8s-worker3.local want_kubernetes_worker=True want_demo=True
 
 # Kubernetes cluster with Docker, Flannel and Multus
-k8s.local want_kubernetes_master=True want_flannel=True want_multus=False
-k8s-worker1.local want_kubernetes_worker=True
-k8s-worker2.local want_kubernetes_worker=True
-k8s-worker3.local want_kubernetes_worker=True
+k8s ansible_host=192.168.83.74 want_kubernetes_master=True want_flannel=True want_multus=False
+k8s-worker1 ansible_host=192.168.83.84 want_kubernetes_worker=True
+k8s-worker2 ansible_host=192.168.83.73 want_kubernetes_worker=True
+voltha-demo ansible_host=192.168.83.90 want_voltha=True
+#k8s-worker3 want_kubernetes_worker=True
 
 # Kubernetes cluster with CRI-O, Calico and MetalLB
-k8s.local want_kubernetes_master=True want_calico=True want_docker=False want_crio=True want_metallb=True
-k8s-worker1.local want_kubernetes_worker=True want_docker=False want_crio=True
-k8s-worker2.local want_kubernetes_worker=True want_docker=False want_crio=True
-k8s-worker3.local want_kubernetes_worker=True want_docker=False want_crio=True
+#k8s.local want_kubernetes_master=True want_calico=True want_docker=False want_crio=True want_metallb=True
+#k8s-worker1.local want_kubernetes_worker=True want_docker=False want_crio=True
+#k8s-worker2.local want_kubernetes_worker=True want_docker=False want_crio=True
+#k8s-worker3.local want_kubernetes_worker=True want_docker=False want_crio=True
 
 # Docker registry
-registry.local want_registry=True
+#registry.local want_registry=True
 
 # VOLTHA operator
-voltha.local want_voltha=True
+#voltha.local
+want_voltha=False
 
 [target:vars]
 # Globals
-github_user=<replace_with_your_github_username>
+github_user=raxonros
 ansible_user=sysadmin
 ansible_password=SetecAstronomy
 ansible_become_password=SetecAstronomy
@@ -70,8 +72,8 @@ want_calico=False
 want_flannel=False
 
 # Kubernetes 1.18
-kubernetes_version='1.18.2'
-docker_version='19.03.6-0ubuntu1~18.04.1'
+#kubernetes_version='1.18.2'
+#docker_version='19.03.6-0ubuntu1~18.04.1'
 
 # Kubernetes 1.15
 kubernetes_version='1.15.11'

@@ -1,36 +1,36 @@
-- name: Get Onos App {{ onos_app }}
+- name: Get Onos App autoprovision
   get_url:
-    url: "{{ onos_apps_url }}/{{ onos_app }}/{{ onos_app }}-{{ custom_onos_app_version }}.oar"
-    dest: /home/sysadmin/{{ onos_app }}-{{ onos_version }}.oar
-  when: artifact_mode == 'artifactory'
+    url: "http://artifactory.hi.inet/artifactory/misc-oln/snapshot/ctpd-autoprovision/ctpd-autoprovision-2.2.1.oar "
+    dest: /home/sysadmin/kind-voltha/onos-files/onos-apps/ctpd-autoprovision.oar
+  # when: artifact_mode == 'artifactory'
 
-- name: Check if {{ onos_app }} is already downloaded
-  local_action: stat path='/tmp/{{ onos_app }}-{{ custom_onos_app_version }}.oar'
-  register: result
-  when: artifacts_policy == 'push' and force_local_artifactory
+# - name: Check if {{ onos_app }} is already downloaded
+#   local_action: stat path='/tmp/{{ onos_app }}-{{ custom_onos_app_version }}.oar'
+#   register: result
+#   when: artifacts_policy == 'push' and force_local_artifactory
 
-- name: Get ONOS app {{ onos_app }} (Get package from artifactory to localhost)
-  local_action: "shell curl {{ onos_apps_url }}/{{ onos_app }}/{{ onos_app }}-{{ custom_onos_app_version }}.oar -o /tmp/{{ onos_app }}-{{ custom_onos_app_version }}.oar"
-  when: artifacts_policy == 'push' and ((force_local_artifactory and result.stat.exists == False) or force_local_artifactory == False)
+# - name: Get ONOS app {{ onos_app }} (Get package from artifactory to localhost)
+#   local_action: "shell curl {{ onos_apps_url }}/{{ onos_app }}/{{ onos_app }}-{{ custom_onos_app_version }}.oar -o /tmp/{{ onos_app }}-{{ custom_onos_app_version }}.oar"
+#   when: artifacts_policy == 'push' and ((force_local_artifactory and result.stat.exists == False) or force_local_artifactory == False)
 
-- name: Get Onos App {{ onos_app }} (Get package from image repo to localhost)
-  local_action: "shell scp -F ssh.cfg {{ groups['image_generator'][0] }}:{{ repo_base_path }}{{ config_artifactory_repo_path }}/{{ onos_app }}/{{ onos_app }}-{{ custom_onos_app_version }}.oar /tmp/{{ onos_app }}-{{ custom_onos_app_version }}.oar"
-  when: artifact_mode == 'repo'
+# - name: Get Onos App {{ onos_app }} (Get package from image repo to localhost)
+#   local_action: "shell scp -F ssh.cfg {{ groups['image_generator'][0] }}:{{ repo_base_path }}{{ config_artifactory_repo_path }}/{{ onos_app }}/{{ onos_app }}-{{ custom_onos_app_version }}.oar /tmp/{{ onos_app }}-{{ custom_onos_app_version }}.oar"
+#   when: artifact_mode == 'repo'
 
-- name: Upload Onos App {{ onos_app }} (Push package to {{ ansible_hostname }})
-  local_action: "shell scp -F {{playbook_dir}}/ssh.cfg /tmp/{{ onos_app }}-{{ custom_onos_app_version }}.oar {{ ansible_hostname }}:/home/sysadmin/{{ onos_app }}-{{ onos_version }}.oar"
-  when: artifact_mode in ['repo', 'push']
-
-
-- name: Execute previous configuration before installing {{ onos_app }}
-  local_action: "shell ssh -F ssh.cfg -o StrictHostKeyChecking=no -p 8101 sysadmin@{{ ansible_hostname }} \"{{ item }}\""
-  with_items: "{{ pre_settings }}"
-  when: pre_settings | length > 0
-
-- name: Install Onos App {{ onos_app }}
-  shell: "ONOS_WEB_USER={{ onos_user }} ONOS_WEB_PASS={{ onos_password }} /opt/onos/bin/onos-app {{ ansible_default_ipv4.address }} install! /home/sysadmin/{{ onos_app }}-{{ onos_version }}.oar"
+# - name: Upload Onos App {{ onos_app }} (Push package to {{ ansible_hostname }})
+#   local_action: "shell scp -F {{playbook_dir}}/ssh.cfg /tmp/{{ onos_app }}-{{ custom_onos_app_version }}.oar {{ ansible_hostname }}:/home/sysadmin/{{ onos_app }}-{{ onos_version }}.oar"
+#   when: artifact_mode in ['repo', 'push']
 
 
-- name: Wait until the application is started
-  pause:
-    seconds: 30
+# - name: Execute previous configuration before installing {{ onos_app }}
+#   local_action: "shell ssh -F ssh.cfg -o StrictHostKeyChecking=no -p 8101 sysadmin@{{ ansible_hostname }} \"{{ item }}\""
+#   with_items: "{{ pre_settings }}"
+#   when: pre_settings | length > 0
+
+# - name: Install Onos App {{ onos_app }}
+#   shell: "ONOS_WEB_USER={{ onos_user }} ONOS_WEB_PASS={{ onos_password }} /opt/onos/bin/onos-app {{ ansible_default_ipv4.address }} install! /home/sysadmin/{{ onos_app }}-{{ onos_version }}.oar"
+
+
+# - name: Wait until the application is started
+#   pause:
+#     seconds: 30

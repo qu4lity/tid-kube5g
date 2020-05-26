@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: onos-onos-classic-0
+spec:
+  type: NodePort
+  selector:
+    statefulset.kubernetes.io/pod-name: onos-onos-classic-0
+  ports:
+    - name: ssh
+      protocol: TCP
+      port: 8101
+      targetPort: 8101
+    - name: http
+      protocol: TCP
+      port: 8181
+      targetPort: 8181
+    - name: openflow
+      protocol: TCP
+      port: 6653
+      targetPort: 6653
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: onos-onos-classic-1
+spec:
+  type: NodePort
+  selector:
+    statefulset.kubernetes.io/pod-name: onos-onos-classic-1
+  ports:
+    - name: ssh
+      protocol: TCP
+      port: 8101
+      targetPort: 8101
+    - name: http
+      protocol: TCP
+      port: 8181
+      targetPort: 8181
+    - name: openflow
+      protocol: TCP
+      port: 6653
+      targetPort: 6653
