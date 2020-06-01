@@ -47,8 +47,8 @@
 
 - name: Modified voltha script
   copy:
-    src: onos-service.yaml
-    dest: /home/sysadmin/onos-service.yaml
+    src: onos-lb.yaml
+    dest: /home/sysadmin/onos-lb.yaml
     mode: 0664
 
 - name: Modified voltha script
@@ -57,21 +57,6 @@
     dest: /home/sysadmin/kind-voltha/voltha
     mode: 0775
 
-
-# - name: Prepare Voltha deployment script
-#   copy:
-#     content: |
-#              #!/usr/bin/env bash
-#              source releases/voltha-2.3
-#              TYPE=minimal DEPLOY_K8S=n WITH_BBSIM=y WITH_RADIUS=y CONFIG_SADIS=y ./voltha up
-#     dest: ~/kind-voltha/launch-script.sh
-#     mode: 0755
-
-- name: Install snapd
-  command: sudo apt install snapd
-
-- name: Install yq
-  command: sudo snap install yq
 
 - name: Create a onos-app directory
   file:
@@ -92,12 +77,15 @@
     mode: "1777"
     block: |
       #!/usr/bin/env bash
+      yes | sudo apt install snapd
+      yes | sudo snap install yq
+      export PATH=/snap/bin:$PATH
       cd /home/sysadmin/kind-voltha/
       rm -f started
       export TYPE=full
       export DEPLOY_K8S=no
       export WITH_ONOS=classic
-      export INSTALL_ONOS_APPS=yes
+      export INSTALL_ONOS_APPS=no
       export WITH_BBSIM=no
       export WITH_RADIUS=no
       export CONFIG_SADIS=no
@@ -112,4 +100,13 @@
     cmd: "/home/sysadmin/kind-voltha/start_voltha_onos.sh"
   args:
     executable: /bin/bash
+
+# - name: Deploy MetalLB
+#   k8s:
+#     kubeconfig: kube.config
+#     state: present
+#     src: /home/sysadmin/onos-lb.yaml
+#   delegate_to: localhost
+
+
 

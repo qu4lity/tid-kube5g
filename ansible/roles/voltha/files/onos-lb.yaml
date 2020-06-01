@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: onos-onos-classic-lb
+spec:
+  ports:
+  - name: openflow
+    port: 6653
+    protocol: TCP
+    targetPort: 6653
+    nodePort: 6653
+  - name: ovsdb
+    port: 6640
+    protocol: TCP
+    targetPort: 6640
+  - name: east-west
+    port: 9876
+    protocol: TCP
+    targetPort: 9876
+  - name: cli
+    port: 8101
+    protocol: TCP
+    targetPort: 8101
+    nodePort: 8101
+  - name: ui
+    port: 8181
+    protocol: TCP
+    targetPort: 8181
+    nodePort: 8181
+  publishNotReadyAddresses: true
+  selector:
+    app: onos-onos-classic
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}
