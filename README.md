@@ -34,13 +34,13 @@ you need to set up a minimal environment to start playing with k8s.
 
 ### Before bootstraping the cluster
 Before installing the cluster remember to setup the network pipes on the machine hosting the cluster:
-Remember to configure the bridge installed and associated to all macvtap and physnet.
+Remember to configure `bridge_name` installed and associated to all macvtap and physnet.
 
 ```console
 ansible-playbook -i inventory  kvm.yaml
 ```
 
-machine will reboot and then you are ready to initiate the k8s cluster setup
+The machine will reboot and then you are ready to initiate the k8s cluster bootstrap setup.
 
 ### Bootstraping the cluster
 
