@@ -32,3 +32,18 @@ these vms can later be provisioned with the minimal necessary to run k8s:
 `prepare-vms/bootstrap.yml` is the ansible-playbook that gets you most of what
 you need to set up a minimal environment to start playing with k8s.
 
+### Before bootstraping the cluster
+Before installing the cluster remember to setup the network pipes on the machine hosting the cluster:
+Remember to configure the bridge installed and associated to all macvtap and physnet.
+
+```console
+ansible-playbook -i inventory  kvm.yaml
+```
+
+machine will reboot and then you are ready to initiate the k8s cluster setup
+
+### Bootstraping the cluster
+
+```console
+ansible-playbook -i inventory  bootstrap.yaml
+```
