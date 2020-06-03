@@ -31,3 +31,9 @@
     name: ufw
     purge: yes
     state: absent
+
+- name: Install python3-lxml
+  become: yes
+  apt:
+    name: python3-lxml
+    state: latest

@@ -1,7 +1,16 @@
 ---
 - name: Define libvirt network
   virt_net:
-    name: br-phys
-    autostart: yes
+    name: 5gphysical
+    command: define
+    xml: '<network><name>5gphysical</name> <forward mode="bridge"/> <bridge name="{{ bridge_name }}"/></network>'
+
+- name: Start libvirt network
+  virt_net:
+    name: 5gphysical
     command: create
-    xml: '<network><name>5gphysical</name> <forward mode="bridge"/> <bridge name="5gbr0"/></network>'
+
+- name: autostar network
+  virt_net:
+    autostart: yes
+    name: 5gphysical

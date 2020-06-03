@@ -6,6 +6,6 @@ dependencies:
     - user
     - apt
     - role: extnet
-      when: want_demo is defined and want_demo
+      when: want_multinic is defined and want_multinic
     - role: multinic
       when: want_multinic is defined and want_multinic

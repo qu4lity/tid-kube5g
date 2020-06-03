@@ -33,8 +33,8 @@ these vms can later be provisioned with the minimal necessary to run k8s:
 you need to set up a minimal environment to start playing with k8s.
 
 ### Before bootstraping the cluster
-Before installing the cluster remember to setup the network pipes on the machine hosting the cluster:
-Remember to configure `bridge_name` installed and associated to all macvtap and physnet.
+Remember to configure `bridge_name` ansible variable in the inventory before provisioning the network setup on the baremetal machine.
+Also modify the network configuration of the baremetal server in role `network_bridge` properly.
 
 ```console
 ansible-playbook -i inventory  kvm.yaml
