@@ -1,5 +1,8 @@
 [target]
 
+# Kubertelconetes kvmhost configuration
+aserver.indalab want_kvmhost=True want_multinic=True want_libvirt=True bridge_ip="IP/MASK" bridge_gw="GW_IP"
+
 # Standard Ubuntu 18.04 server
 sandbox.local
 
