@@ -33,29 +33,11 @@
     insertafter: EOF
     line: 'PATH=~/kind-voltha/bin:$PATH'
 
-# - name: Modified minimal-env.sh
-#   copy:
-#     src: minimal-env.sh
-#     dest: /home/sysadmin/kind-voltha/minimal-env.sh
-#     mode: 0664
-
-# - name: Modified minimal-values.yaml
-#   copy:
-#     src: minimal-values.yaml
-#     dest: /home/sysadmin/kind-voltha/minimal-values.yaml
-#     mode: 0664
-
 - name: Modified voltha script
   copy:
     src: onos-lb.yaml
     dest: /home/sysadmin/onos-lb.yaml
     mode: 0664
-
-- name: Modified voltha script
-  copy:
-    src: voltha
-    dest: /home/sysadmin/kind-voltha/voltha
-    mode: 0775
 
 
 - name: Create a onos-app directory
@@ -88,6 +70,7 @@
       export INSTALL_ONOS_APPS=no
       export WITH_BBSIM=no
       export WITH_RADIUS=no
+      export SCHEDULE_ON_CONTROL_NODES=yes
       export CONFIG_SADIS=no
       export NUM_OF_ATOMIX=3
       export NUM_OF_ONOS=2
@@ -101,12 +84,6 @@
   args:
     executable: /bin/bash
 
-# - name: Deploy MetalLB
-#   k8s:
-#     kubeconfig: kube.config
-#     state: present
-#     src: /home/sysadmin/onos-lb.yaml
-#   delegate_to: localhost
 
 
 
