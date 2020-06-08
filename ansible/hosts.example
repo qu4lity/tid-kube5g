@@ -76,12 +76,12 @@ want_calico=False
 want_flannel=False
 
 # Kubernetes 1.18
-kubernetes_version='1.18.2'
-docker_version='19.03.6-0ubuntu1~18.04.1'
+kubernetes_version='1.18.3'
+docker_version='' # This will install latest docker version
 
 # Kubernetes 1.15
 kubernetes_version='1.15.11'
-docker_version='18.09.7-0ubuntu1~18.04.4'
+docker_version='=18.09.7-0ubuntu1~18.04.4' # This will specify a previous one for compatibility purposes, please note '='
 
 # Kubernetes globals
 pod_network_cidr='192.168.0.0/16'

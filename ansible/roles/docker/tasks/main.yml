@@ -6,7 +6,7 @@
     autoremove: yes
     state: present
     force: yes
-    name: docker.io={{ docker_version }}
+    name: docker.io{{ docker_version }}
 
 - name: adding existing user '{{ ansible_user }}' to group docker
   become: yes
