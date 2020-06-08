@@ -87,3 +87,4 @@ docker_version='18.09.7-0ubuntu1~18.04.4'
 pod_network_cidr='192.168.0.0/16'
 metallb_ip_pool='192.168.1.100-192.168.1.110'
 apiserver_port_range='30000-64000'
+max_pods=200
