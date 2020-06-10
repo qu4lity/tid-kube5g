@@ -1,6 +1,10 @@
-- name: Find external interface
+- name: Get physical network list
+  command: find /sys/class/net -type l -not -lname '*virtual*' -printf '%f\n'
+  register: list_iface
+
+- name: Remove default interface
   set_fact:
-    external_interface: "{{ ansible_interfaces | difference(['lo',ansible_default_ipv4.interface]) | first }}"
+    external_interface: "{{ list_iface.stdout_lines | difference([ansible_default_ipv4.interface]) | first }}"
   ignore_errors: true
 
 - debug:
