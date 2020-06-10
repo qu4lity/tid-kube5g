@@ -59,8 +59,7 @@ want_crio=False
 want_voltha=False
 
 # MultiNIC
-external_vlan='VLAN_NUMBER'
-external_interface='IFACE'
+external_vlan='Vlan_number'
 
 # Speedtest demo
 want_speedtest=False
