@@ -58,8 +58,9 @@ want_crio=False
 # VOLTHA
 want_voltha=False
 
-# 5G Exotic
-want_demo=False
+# MultiNIC
+external_vlan='VLAN_NUMBER'
+external_interface='IFACE'
 
 # Speedtest demo
 want_speedtest=False
