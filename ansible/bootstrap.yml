@@ -7,5 +7,7 @@
     apt_updated: "0"
   roles:
     - bootstrap
+    - role: multinic
+      when: want_multinic is defined and want_multinic
     - software
     - cleanup
