@@ -1,0 +1,11 @@
+- name: Add WireGuard repository (for Ubuntu < 19.10)
+    apt_repository:
+      repo: "ppa:wireguard/wireguard"
+      state: present
+      update_cache: yes
+
+- name: Install wireguard packages (for Ubuntu < 19.10)
+    apt:
+      name:
+        - "wireguard"
+      state: present

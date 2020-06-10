@@ -10,10 +10,10 @@ sandbox.local
 sandbox.local want_kubernetes=False want_terraform=True want_packer=True want_vagrant=True want_libvirt=True want_ansible=True
 
 # Kubernetes cluster with Docker for ONE CLICK DEMO
-k8s.local want_kubernetes_master=True want_flannel=True want_multus=True want_demo=True want_speedtest=True
-k8s-worker1.local want_kubernetes_worker=True want_demo=True
-k8s-worker2.local want_kubernetes_worker=True want_demo=True
-k8s-worker3.local want_kubernetes_worker=True want_demo=True
+k8s.local want_kubernetes_master=True want_flannel=True want_multus=True want_speedtest=True
+k8s-worker1.local want_kubernetes_worker=True
+k8s-worker2.local want_kubernetes_worker=True
+k8s-worker3.local want_kubernetes_worker=True
 
 # Kubernetes cluster with Docker, Flannel and Multus
 k8s.local want_kubernetes_master=True want_flannel=True want_multus=False
@@ -51,6 +51,9 @@ want_libvirt=False
 # Docker Container runtime
 want_docker=True
 want_registry=False
+
+# Wireguard
+want_wireguard=False
 
 # CRIO Container runtime
 want_crio=False
