@@ -12,6 +12,6 @@
   shell:
     cmd:  |
       ip link set {{ external_interface }} up
-      vconfig add {{ external_interface }} 5
-      ip link set {{ external_interface }}.5 up
+      vconfig add {{ external_interface }} {{ external_vlan }}
+      ip link set {{ external_interface }}.{{ external_vlan }} up
   when: external_interface is defined
