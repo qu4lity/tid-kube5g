@@ -13,3 +13,16 @@
       - "wireguard-dkms"
       - "wireguard-tools"
     state: present
+
+- name: Load wireguard packages into kernel
+  become: yes
+  modprobe:
+    name: wireguard
+    state: present
+
+- name: Load kernel modules when booting
+  become: yes
+  template:
+    src: wireguard.conf.j2
+    dest: /etc/modules-load.d/wireguard.con
+    mode: '0644'
