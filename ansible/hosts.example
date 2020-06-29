@@ -66,9 +66,6 @@ want_dynamic_pv=False
 # MultiNIC
 external_vlan='Vlan_number'
 
-# MultiNIC
-external_vlan='Vlan_number'
-
 # Speedtest demo
 want_speedtest=False
 
