@@ -1,40 +1,42 @@
+
 [target]
 
+# Kubertelconetes kvmhost configuration
+aserver.indalab want_kvmhost=True want_multinic=True want_libvirt=True bridge_ip="IP/MASK" bridge_gw="GW_IP"
+
 # Standard Ubuntu 18.04 server
-#sandbox.local
+sandbox.local
 
 # Developer Ubuntu 18.04 server with some extra tools
-#sandbox.local want_kubernetes=False want_terraform=True want_packer=True want_vagrant=True want_libvirt=True want_ansible=True
+sandbox.local want_kubernetes=False want_terraform=True want_packer=True want_vagrant=True want_libvirt=True want_ansible=True
 
 # Kubernetes cluster with Docker for ONE CLICK DEMO
-#k8s.local want_kubernetes_master=True want_flannel=True want_multus=True want_demo=True
-#k8s-worker1.local want_kubernetes_worker=True want_demo=True
-#k8s-worker2.local want_kubernetes_worker=True want_demo=True
-#k8s-worker3.local want_kubernetes_worker=True want_demo=True
+k8s.local want_kubernetes_master=True want_flannel=True want_multus=True want_speedtest=True want_dynamic_pv=True
+k8s-worker1.local want_kubernetes_worker=True
+k8s-worker2.local want_kubernetes_worker=True
+k8s-worker3.local want_kubernetes_worker=True
 
 # Kubernetes cluster with Docker, Flannel and Multus
-k8s ansible_host=192.168.83.74 want_kubernetes_master=True want_flannel=True want_multus=False
-k8s-worker1 ansible_host=192.168.83.84 want_kubernetes_worker=True
-k8s-worker2 ansible_host=192.168.83.73 want_kubernetes_worker=True
-voltha-demo ansible_host=192.168.83.90 want_voltha=True
-#k8s-worker3 want_kubernetes_worker=True
+k8s.local want_kubernetes_master=True want_flannel=True want_multus=False
+k8s-worker1.local want_kubernetes_worker=True
+k8s-worker2.local want_kubernetes_worker=True
+k8s-worker3.local want_kubernetes_worker=True
 
 # Kubernetes cluster with CRI-O, Calico and MetalLB
-#k8s.local want_kubernetes_master=True want_calico=True want_docker=False want_crio=True want_metallb=True
-#k8s-worker1.local want_kubernetes_worker=True want_docker=False want_crio=True
-#k8s-worker2.local want_kubernetes_worker=True want_docker=False want_crio=True
-#k8s-worker3.local want_kubernetes_worker=True want_docker=False want_crio=True
+k8s.local want_kubernetes_master=True want_calico=True want_docker=False want_crio=True want_metallb=True
+k8s-worker1.local want_kubernetes_worker=True want_docker=False want_crio=True
+k8s-worker2.local want_kubernetes_worker=True want_docker=False want_crio=True
+k8s-worker3.local want_kubernetes_worker=True want_docker=False want_crio=True
 
 # Docker registry
-#registry.local want_registry=True
+registry.local want_registry=True
 
 # VOLTHA operator
-#voltha.local
-want_voltha=False
+voltha.local want_voltha=True
 
 [target:vars]
 # Globals
-github_user=raxonros
+github_user=<replace_with_your_github_username>
 ansible_user=sysadmin
 ansible_password=SetecAstronomy
 ansible_become_password=SetecAstronomy
@@ -51,14 +53,21 @@ want_libvirt=False
 want_docker=True
 want_registry=False
 
+# Wireguard
+want_wireguard=False
+
 # CRIO Container runtime
 want_crio=False
 
 # VOLTHA
 want_voltha=False
+want_dynamic_pv=False
 
-# 5G Exotic
-want_demo=False
+# MultiNIC
+external_vlan='Vlan_number'
+
+# Speedtest demo
+want_speedtest=False
 
 # Kubernetes profiles (these should remain as they are, to be specialized in the host declaration)
 want_kubernetes_master=False
@@ -72,14 +81,15 @@ want_calico=False
 want_flannel=False
 
 # Kubernetes 1.18
-#kubernetes_version='1.18.2'
-#docker_version='19.03.6-0ubuntu1~18.04.1'
+kubernetes_version='1.18.3'
+docker_version='' # This will install latest docker version
 
 # Kubernetes 1.15
 kubernetes_version='1.15.11'
-docker_version='18.09.7-0ubuntu1~18.04.4'
+docker_version='=18.09.7-0ubuntu1~18.04.4' # This will specify a previous one for compatibility purposes, please note '='
 
 # Kubernetes globals
 pod_network_cidr='192.168.0.0/16'
 metallb_ip_pool='192.168.1.100-192.168.1.110'
 apiserver_port_range='30000-64000'
+max_pods=200

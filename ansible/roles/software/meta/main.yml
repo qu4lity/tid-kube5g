@@ -31,9 +31,10 @@ dependencies:
       when: want_metallb is defined and want_metallb
     - role: multus
       when: want_multus is defined and want_multus
+    - role: dynamic-pv
+      when: want_dynamic_pv is defined and want_dynamic_pv
     - role: voltha
       when: want_voltha is defined and want_voltha
     - role: demo
       when: want_demo is defined and want_demo
-    - role: dynamic-pv
-      when: want_dynamic_pv is defined and want_dynamic_pv
+

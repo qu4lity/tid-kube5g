@@ -50,7 +50,7 @@
   tags: onos_apps
   include: install-app.yml
 
-
+#This is not a correct way to launch voltha, pending improvement
 - name: Create script to start Voltha & ONOS
   blockinfile:
     path: /home/sysadmin/kind-voltha/start_voltha_onos.sh
@@ -83,7 +83,3 @@
     cmd: "/home/sysadmin/kind-voltha/start_voltha_onos.sh"
   args:
     executable: /bin/bash
-
-
-
-
