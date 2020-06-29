@@ -6,7 +6,7 @@
     autoremove: yes
     state: present
     force: yes
-    name: docker.io={{ docker_version }}
+    name: docker.io{{ docker_version }}
 
 - name: adding existing user '{{ ansible_user }}' to group docker
   become: yes
@@ -51,3 +51,13 @@
     src: "{{ registry_name.stdout }}.crt"
     dest: "/etc/docker/certs.d/{{ registry_name.stdout }}/{{ registry_name.stdout }}.crt"
   when: registry_name.stdout
+
+- name: Ensure /etc/docker/certs.d/dockerhub.hi.inet exists
+  become: yes
+  file:
+    path: "/etc/docker/certs.d/dockerhub.hi.inet"
+    state: directory
+
+- name: Download cert from dockerhub.hi.inet
+  become: yes
+  shell: 'echo | openssl s_client -servername dockerhub.hi.inet -connect dockerhub.hi.inet:443 | sed -ne "/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p" > /etc/docker/certs.d/dockerhub.hi.inet/dockerhub_hi_inet.crt'

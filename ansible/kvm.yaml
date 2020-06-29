@@ -6,6 +6,8 @@
   vars:
     apt_updated: "0"
   roles:
-    - bootstrap
+    - sudo
+    - user
+    - apt
     - role: kvmhost
       when: want_kvmhost is defined and want_kvmhost

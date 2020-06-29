@@ -32,3 +32,18 @@ these vms can later be provisioned with the minimal necessary to run k8s:
 `prepare-vms/bootstrap.yml` is the ansible-playbook that gets you most of what
 you need to set up a minimal environment to start playing with k8s.
 
+### Quickstart
+
+Remember to configure `bridge_name` `bridge_gw` and `bridge_ip` ansible variable in the inventory before provisioning the network setup on the baremetal machine.
+
+```console
+ansible-playbook -i inventory  kvm.yaml
+```
+
+The `kvm.yaml` playbook install the minimum necessary packages and runs the role kvmhost that prepares the pipes on the server (bridge, and libvirt interfaces) in order to launch the cluster. The machine will reboot and then you are ready to initiate the k8s cluster bootstrap setup.
+
+Then we bootstrap playbook deploys the kubertelconetes cluster (intel-multus+flannel):
+
+```console
+ansible-playbook -i inventory  bootstrap.yaml
+```

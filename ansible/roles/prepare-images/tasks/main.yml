@@ -6,7 +6,7 @@
     src: "/etc/docker/certs.d/{{ inventory_hostname }}/{{ inventory_hostname }}.crt"
     dest: "/tmp/{{ inventory_hostname }}.crt"
 
-- name: copy 
+- name: copy
   become: yes
   copy:
     src: "/tmp/{{ inventory_hostname }}.crt"
@@ -15,7 +15,7 @@
 
 - name: tag sgw and push to local registry
   docker_image:
-    name: registry.local/config-diss-upf_sgw 
+    name:  dockerhub.hi.inet/open5gs_sgw:1.2.4
     tag: latest
     state: present
     pull: false
@@ -24,7 +24,7 @@
 
 - name: tag pgw and push to local registry
   docker_image:
-    name: registry.local/config-diss-upf_pgw
+    name: dockerhub.hi.inet/open5gs_pgw:1.2.4
     tag: latest
     state: present
     pull: false
