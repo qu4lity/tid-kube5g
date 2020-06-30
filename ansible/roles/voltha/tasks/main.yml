@@ -22,9 +22,9 @@
 
 - name: Clone Voltha repository
   git:
-    repo: 'https://github.com/ciena/kind-voltha'
+    repo: 'https://github.com/opencord/kind-voltha.git'
     dest: ~/kind-voltha
-    version: v2.2
+    version: master
 
 - name: Include kind-voltha binaries in path
   lineinfile:
@@ -33,33 +33,24 @@
     insertafter: EOF
     line: 'PATH=~/kind-voltha/bin:$PATH'
 
-- name: Modified minimal-env.sh
-  copy:
-    src: minimal-env.sh
-    dest: /home/sysadmin/kind-voltha/minimal-env.sh
-    mode: 0664
-
-- name: Modified minimal-values.yaml
-  copy:
-    src: minimal-values.yaml
-    dest: /home/sysadmin/kind-voltha/minimal-values.yaml
-    mode: 0664
-
 - name: Modified voltha script
   copy:
-    src: voltha
-    dest: /home/sysadmin/kind-voltha/voltha
-    mode: 0775
+    src: onos-lb.yaml
+    dest: /home/sysadmin/onos-lb.yaml
+    mode: 0664
 
-# - name: Prepare Voltha deployment script
-#   copy:
-#     content: |
-#              #!/usr/bin/env bash
-#              source releases/voltha-2.3
-#              TYPE=minimal DEPLOY_K8S=n WITH_BBSIM=y WITH_RADIUS=y CONFIG_SADIS=y ./voltha up
-#     dest: ~/kind-voltha/launch-script.sh
-#     mode: 0755
 
+- name: Create a onos-app directory
+  file:
+    path: /home/sysadmin/kind-voltha/onos-files/onos-apps
+    state: directory
+    mode: '0755'
+
+- name: Download Autoprovision App
+  tags: onos_apps
+  include: install-app.yml
+
+#This is not a correct way to launch voltha, pending improvement
 - name: Create script to start Voltha & ONOS
   blockinfile:
     path: /home/sysadmin/kind-voltha/start_voltha_onos.sh
@@ -68,16 +59,21 @@
     mode: "1777"
     block: |
       #!/usr/bin/env bash
+      yes | sudo apt install snapd
+      yes | sudo snap install yq
+      export PATH=/snap/bin:$PATH
       cd /home/sysadmin/kind-voltha/
       rm -f started
-      export VOLTHA_CHART_VERSION=2.2.0
-      export VOLTHA_BBSIM_CHART_VERSION=3.0.7
-      export VOLTHA_ADAPTER_SIM_CHART_VERSION=2.2.3
-      export VOLTHA_ADAPTER_OPEN_OLT_CHART_VERSION=2.2.0
-      export VOLTHA_ADAPTER_OPEN_ONU_CHART_VERSION=2.2.0
-      export ONOS_CHART_VERSION=1.1.4
+      export TYPE=full
       export DEPLOY_K8S=no
-      export WITH_ONOS=yes
+      export WITH_ONOS=classic
+      export INSTALL_ONOS_APPS=no
+      export WITH_BBSIM=no
+      export WITH_RADIUS=no
+      export SCHEDULE_ON_CONTROL_NODES=yes
+      export CONFIG_SADIS=no
+      export NUM_OF_ATOMIX=3
+      export NUM_OF_ONOS=2
       source voltha up
       touch started
       echo "STARTED" > started
