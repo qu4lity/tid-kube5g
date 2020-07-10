@@ -1,0 +1,19 @@
+Host corenet1 corenet1.lab
+  Hostname corenet1.lab
+  ProxyCommand sshpass -p labpassword ssh -p 20024 labuser@10.95.164.110 -W %h:%p
+  User sysadmin
+  ForwardAgent no
+  ForwardX11 no
+  ConnectTimeout 10
+
+Host corenet2 corenet2.lab
+  Hostname corenet1.lab
+  ProxyCommand sshpass -p labpassword ssh -p 20024 labuser@10.95.164.110 -W %h:%p
+  User sysadmin
+  ForwardAgent no
+  ForwardX11 no
+  ConnectTimeout 10
+
+Host *
+    StrictHostKeyChecking no
+
