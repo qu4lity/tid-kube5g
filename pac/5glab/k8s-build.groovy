@@ -4,18 +4,38 @@ pipeline {
         disableConcurrentBuilds()
     }
     stages {
+        stage ('Prepare KVM hosts networking'){
+            steps {
+                dir ("${WORKSPACE}") {
+                    sh '''
+                       docker run                                           \
+                         --rm                                               \
+                         -w /srv                                            \
+                         -v $(pwd)/ansible:/srv                             \
+                         -v $(pwd)/pac/5glab:/5glab                         \
+                         -v $(pwd)/pac/5glab/ssh_config:/etc/ssh/ssh_config \
+                         --net=host                                         \
+                         dockerhub.hi.inet/5ghacking/ansible:2.9.7-2        \
+                         -i /assets/demo                                    \
+                         /5glab/kvm.yml
+                       '''
+                }
+            }
+        }
         stage ('Provision K8S cluster'){
             steps {
-                dir ("${WORKSPACE}/ansible/") {
+                dir ("${WORKSPACE}") {
                     sh '''
-                       docker run                                        \
-                         --rm                                            \
-                         -w /srv                                         \
-                         -v $(pwd):/srv                                  \
-                         --net=host                                      \
-                         dockerhub.hi.inet/5ghacking/ansible:2.9.7-2     \
-                         -i /srv/demo                                    \
-                         /srv/bootstrap.yml                              \
+                       docker run                                           \
+                         --rm                                               \
+                         -w /srv                                            \
+                         -v $(pwd)/ansible:/srv                             \
+                         -v $(pwd)/pac/5glab:/5glab                         \
+                         -v $(pwd)/pac/5glab/ssh_config:/etc/ssh/ssh_config \
+                         --net=host                                         \
+                         dockerhub.hi.inet/5ghacking/ansible:2.9.7-2        \
+                         -i /assets/demo                                    \
+                         /5glab/bootstrap.yml
                        '''
                 }
             }
