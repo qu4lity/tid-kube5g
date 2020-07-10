@@ -1,14 +1,12 @@
-
 [target]
 
 # Kubertelconetes kvmhost configuration
 corenet1.lab want_kvmhost=True want_multinic=True want_libvirt=True bridge_ip="172.30.0.20/16" bridge_gw="172.30.0.1"
 
 # Kubernetes cluster with Docker for ONE CLICK DEMO
-k8s.local want_kubernetes_master=True want_flannel=True want_multus=True want_speedtest=True want_dynamic_pv=True
-k8s-worker1.local want_kubernetes_worker=True
-k8s-worker2.local want_kubernetes_worker=True
-k8s-worker3.local want_kubernetes_worker=True
+corenet1.lab want_kubernetes_master=True want_flannel=True want_multus=True
+corenet2.lab want_kubernetes_worker=True
+10.95.164.110 ansible_user='labuser' ansible_ssh_pass=labpassword ansible_ssh_port=20022 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [target:vars]
 # Globals
@@ -40,7 +38,7 @@ want_voltha=False
 want_dynamic_pv=False
 
 # MultiNIC
-external_vlan='Vlan_number'
+external_vlan='6'
 
 # Speedtest demo
 want_speedtest=False
@@ -59,10 +57,6 @@ want_flannel=False
 # Kubernetes 1.18
 kubernetes_version='1.18.3'
 docker_version='' # This will install latest docker version
-
-# Kubernetes 1.15
-kubernetes_version='1.15.11'
-docker_version='=18.09.7-0ubuntu1~18.04.4' # This will specify a previous one for compatibility purposes, please note '='
 
 # Kubernetes globals
 pod_network_cidr='192.168.0.0/16'
