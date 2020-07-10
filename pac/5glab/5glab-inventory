@@ -1,11 +1,10 @@
 [target]
 
 # Kubertelconetes kvmhost configuration
-corenet1.lab want_kvmhost=True want_multinic=True want_libvirt=True bridge_ip="172.30.0.20/16" bridge_gw="172.30.0.1"
+quantadu.lab want_multinic=True
 
-# Kubernetes cluster with Docker for ONE CLICK DEMO
-corenet1.lab want_kubernetes_master=True want_flannel=True want_multus=True
-corenet2.lab want_kubernetes_worker=True
+# Kubernetes cluster with Docker for One Click Demo
+quantadu.lab want_kubernetes_master=True want_kubernetes_worker=True want_flannel=True want_multus=True
 10.95.164.110 ansible_user='labuser' ansible_ssh_pass=labpassword ansible_ssh_port=20022 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [target:vars]
@@ -38,7 +37,7 @@ want_voltha=False
 want_dynamic_pv=False
 
 # MultiNIC
-external_vlan='6'
+external_vlan='5'
 
 # Speedtest demo
 want_speedtest=False
