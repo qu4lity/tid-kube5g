@@ -16,7 +16,7 @@ pipeline {
                          -v $(pwd)/pac/5glab/ssh_config:/etc/ssh/ssh_config \
                          --net=host                                         \
                          dockerhub.hi.inet/5ghacking/ansible:2.9.7-2        \
-                         -i /assets/demo                                    \
+                         -i /assets/5glab-inventory                         \
                          /5glab/kvm.yml
                        '''
                 }
@@ -34,7 +34,7 @@ pipeline {
                          -v $(pwd)/pac/5glab/ssh_config:/etc/ssh/ssh_config \
                          --net=host                                         \
                          dockerhub.hi.inet/5ghacking/ansible:2.9.7-2        \
-                         -i /assets/demo                                    \
+                         -i /assets/5glab-inventory                         \
                          /5glab/bootstrap.yml
                        '''
                 }
