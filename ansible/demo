@@ -1,0 +1,71 @@
+
+[target]
+
+# Kubertelconetes kvmhost configuration
+corenet1.lab want_kvmhost=True want_multinic=True want_libvirt=True bridge_ip="172.30.0.20/16" bridge_gw="172.30.0.1"
+
+# Kubernetes cluster with Docker for ONE CLICK DEMO
+k8s.local want_kubernetes_master=True want_flannel=True want_multus=True want_speedtest=True want_dynamic_pv=True
+k8s-worker1.local want_kubernetes_worker=True
+k8s-worker2.local want_kubernetes_worker=True
+k8s-worker3.local want_kubernetes_worker=True
+
+[target:vars]
+# Globals
+github_user=jnunyez
+ansible_user=sysadmin
+ansible_password=SetecAstronomy
+ansible_become_password=SetecAstronomy
+ansible_python_interpreter=/usr/bin/python3
+
+# Tools (change here if you want to apply to any machine)
+want_terraform=False
+want_packer=False
+want_vagrant=False
+want_ansible=False
+want_libvirt=False
+
+# Docker Container runtime
+want_docker=True
+want_registry=False
+
+# Wireguard
+want_wireguard=False
+
+# CRIO Container runtime
+want_crio=False
+
+# VOLTHA
+want_voltha=False
+want_dynamic_pv=False
+
+# MultiNIC
+external_vlan='Vlan_number'
+
+# Speedtest demo
+want_speedtest=False
+
+# Kubernetes profiles (these should remain as they are, to be specialized in the host declaration)
+want_kubernetes_master=False
+want_kubernetes_worker=False
+
+# Kubernetes Networking
+want_multinic=False
+want_multus=False
+want_metallb=False
+want_calico=False
+want_flannel=False
+
+# Kubernetes 1.18
+kubernetes_version='1.18.3'
+docker_version='' # This will install latest docker version
+
+# Kubernetes 1.15
+kubernetes_version='1.15.11'
+docker_version='=18.09.7-0ubuntu1~18.04.4' # This will specify a previous one for compatibility purposes, please note '='
+
+# Kubernetes globals
+pod_network_cidr='192.168.0.0/16'
+metallb_ip_pool='192.168.1.100-192.168.1.110'
+apiserver_port_range='30000-64000'
+max_pods=200
