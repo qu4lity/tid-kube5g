@@ -11,7 +11,7 @@ ansible_user='labuser'
 ansible_password='labpassword'
 ansible_become_password='labpassword'
 ansible_python_interpreter=/usr/bin/python3
-deployer=nuc6-deployer
+deployer=nuc5-deployer
 
 # Tools (change here if you want to apply to any machine)
 want_terraform=False

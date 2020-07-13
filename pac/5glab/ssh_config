@@ -1,5 +1,5 @@
-Host nuc6-deployer
-  Hostname nuc6.lab
+Host nuc5-deployer
+  Hostname nuc5.lab
   ProxyCommand sshpass -p labpassword ssh -p 20022 labuser@10.95.164.110 -W %h:%p
   User labuser
   IdentityFile ssh_key
