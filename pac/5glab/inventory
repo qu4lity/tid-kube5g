@@ -1,19 +1,17 @@
 [target]
 
-# Kubertelconetes kvmhost configuration
-quantadu.lab want_multinic=True
-
 # Kubernetes cluster with Docker for One Click Demo
-quantadu.lab want_kubernetes_master=True want_kubernetes_worker=True want_flannel=True want_multus=True
-10.95.164.110 ansible_user='labuser' ansible_ssh_pass=labpassword ansible_ssh_port=20022 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+corenet1 want_kubernetes_master=True want_flannel=True want_multus=True
+corenet2 want_kubernetes_worker=True want_multinic=True external_interface='enp129s0f0'
 
 [target:vars]
 # Globals
 github_user=jnunyez
-ansible_user=sysadmin
-ansible_password=SetecAstronomy
-ansible_become_password=SetecAstronomy
+ansible_user='labuser'
+ansible_password='labpassword'
+ansible_become_password='labpassword'
 ansible_python_interpreter=/usr/bin/python3
+deployer=nuc6-deployer
 
 # Tools (change here if you want to apply to any machine)
 want_terraform=False
