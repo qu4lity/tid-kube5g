@@ -33,9 +33,9 @@ pipeline {
             steps {
                 dir ("${WORKSPACE}") {
                     sh '''
-                       export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"\
-                       export AWS_DEFAULT_REGION=eu-west-3                    \
-                       export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"        \
+                       export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"
+                       export AWS_DEFAULT_REGION=eu-west-3
+                       export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"
                        aws sqs send-message                                   \
                          --queue-url ${QUEUE_URL}                             \
                          --message-body ${MESSAGE}
