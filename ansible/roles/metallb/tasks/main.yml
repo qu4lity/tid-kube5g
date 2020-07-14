@@ -12,34 +12,34 @@
 
 - name: Create MetalLB namespace
   k8s:
-    kubeconfig: kube.config
+    kubeconfig: /tmp/kube.config
     state: present
     kind: Namespace
     name: metallb-system
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"
 
 - name: Download MetalLB manifest
   get_url:
     url: https://raw.githubusercontent.com/google/metallb/v0.9.3/manifests/metallb.yaml
     dest: /tmp/metallb.yaml
     validate_certs: no
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"
 
 - name: Deploy MetalLB
   k8s:
-    kubeconfig: kube.config
+    kubeconfig: /tmp/kube.config
     state: present
     src: /tmp/metallb.yaml
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"
 
 - name: Create secretkey
   shell: openssl rand -base64 128
   register: secretkey
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"
 
 - name: Create MetalLB secret
   k8s:
-    kubeconfig: kube.config
+    kubeconfig: /tmp/kube.config
     state: present
     definition:
       kind: Secret
@@ -48,11 +48,11 @@
         name: memberlist
       data:
         secretkey: "{{ secretkey.stdout }}"
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"
 
 - name: Create MetalLB ConfigMap
   k8s:
-    kubeconfig: kube.config
+    kubeconfig: /tmp/kube.config
     state: present
     definition:
       kind: ConfigMap
@@ -66,4 +66,4 @@
             protocol: layer2
             addresses:
             - {{ metallb_ip_pool }}
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"

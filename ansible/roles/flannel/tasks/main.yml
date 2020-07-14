@@ -7,7 +7,7 @@
 
 - name: Deploy Flannel SDN
   k8s:
-    kubeconfig: kube.config
+    kubeconfig: /tmp/kube.config
     state: present
     src: /tmp/flannel.yaml
   delegate_to: "{{ deployer }}"

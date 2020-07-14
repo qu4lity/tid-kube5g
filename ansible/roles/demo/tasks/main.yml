@@ -1,6 +1,6 @@
 ---
 - name: Copy kube.config to /tmp for awesome-5g-hacking
   copy:
-    src: kube.config
+    src: /tmp/kube.config
     dest: /tmp/kube.config
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"

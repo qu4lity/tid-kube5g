@@ -1,6 +1,6 @@
 Host nuc5-deployer
   Hostname nuc5.lab
-  ProxyCommand sshpass -p labpassword ssh -p 20022 labuser@10.95.164.110 -W %h:%p
+  ProxyCommand sshpass -p labpassword ssh -p 20032 labuser@10.95.164.110 -W %h:%p
   User labuser
   IdentityFile /etc/ssh/ssh_key
   ForwardAgent no

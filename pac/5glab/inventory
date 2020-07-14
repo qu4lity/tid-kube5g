@@ -3,6 +3,7 @@
 # Kubernetes cluster with Docker for One Click Demo
 corenet1 want_kubernetes_master=True want_flannel=True want_multus=True
 corenet2 want_kubernetes_worker=True want_multinic=True external_interface='enp129s0f0'
+10.95.164.110 ansible_user='labuser' ansible_ssh_pass=labpassword ansible_ssh_port=20032 ansible_ssh_common_args='-o StrictHostKeyChecking=no' want_creds=True want_docker=False
 
 [target:vars]
 # Globals

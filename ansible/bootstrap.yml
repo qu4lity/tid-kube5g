@@ -7,6 +7,7 @@
     apt_updated: "0"
   roles:
     - bootstrap
+      when: want_kubernetes_master or want_kubernetes_worker
     - role: multinic
       when: want_multinic is defined and want_multinic
     - software

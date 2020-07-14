@@ -1,5 +1,5 @@
 ---
-- name: Deploy speedtest yaml 
+- name: Deploy speedtest yaml
   template:
     src: speedtest.yaml.j2
     dest: /tmp/speedtest.yaml
@@ -7,8 +7,8 @@
 
 - name: Deploy speedtest
   k8s:
-    kubeconfig: kube.config
+    kubeconfig: /tmp/kube.config
     state: present
     src: /tmp/speedtest.yaml
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"
 

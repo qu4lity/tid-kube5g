@@ -23,6 +23,8 @@ dependencies:
       when: want_kubernetes_master is defined and want_kubernetes_master
     - role: kubernetes-worker
       when: want_kubernetes_worker is defined and want_kubernetes_worker
+    - role: k8s-creds
+      when: want_creds is defined and want_creds
     - role: calico
       when: want_calico is defined and want_calico
     - role: flannel

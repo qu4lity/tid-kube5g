@@ -41,7 +41,8 @@ ansible_user=sysadmin
 ansible_password=SetecAstronomy
 ansible_become_password=SetecAstronomy
 ansible_python_interpreter=/usr/bin/python3
-
+#hostname creating/deleting/applying kube resources
+deployer=localhost
 # Tools (change here if you want to apply to any machine)
 want_terraform=False
 want_packer=False

@@ -3,11 +3,11 @@
   template:
     src: calico.yaml.j2
     dest: /tmp/calico.yaml
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"
 
 - name: Deploy Calico SDN
   k8s:
-    kubeconfig: kube.config
+    kubeconfig: /tmp/kube.config
     state: present
     src: /tmp/calico.yaml
-  delegate_to: localhost
+  delegate_to: "{{ deployer }}"
