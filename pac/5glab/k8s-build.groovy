@@ -37,8 +37,8 @@ pipeline {
                        export AWS_DEFAULT_REGION=eu-west-3                    \
                        export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"        \
                        aws sqs send-message                                   \
-                         --queue-url $QUEUE_URL                               \
-                         --message-body $MESSAGE
+                         --queue-url ${QUEUE_URL}                             \
+                         --message-body ${MESSAGE}
                        '''
                 }
             }
