@@ -6,7 +6,7 @@ pipeline {
         withCredentials(awsCredentials)
     }
     environment {
-        MESSAGE   = 'k8s-deployed'
+        MESSAGE   = 'development k8s-deployed'
         QUEUE_URL = 'https://sqs.eu-west-3.amazonaws.com/709233559969/5GnowSQS'
     }
     stages {
@@ -14,16 +14,16 @@ pipeline {
             steps {
                 dir ("${WORKSPACE}") {
                     sh '''
-                       docker run                                           \
-                         --rm                                               \
-                         -w /srv                                            \
-                         -v $(pwd)/ansible:/srv                             \
-                         -v $(pwd)/pac/5glab:/5glab                         \
-                         -v $(pwd)/pac/5glab/ssh_config:/etc/ssh/ssh_config \
-                         -v $(pwd)/pac/5glab/ssh_key:/etc/ssh/ssh_key       \
-                         --net=host                                         \
-                         dockerhub.hi.inet/5ghacking/ansible:2.9.7-2        \
-                         -i /5glab/inventory                                \
+                       docker run                                                       \
+                         --rm                                                           \
+                         -w /srv                                                        \
+                         -v $(pwd)/ansible:/srv                                         \
+                         -v $(pwd)/pac/5glab:/5glab                                     \
+                         -v $(pwd)/pac/5glab/ssh_config:/etc/ssh/ssh_config_development \
+                         -v $(pwd)/pac/5glab/ssh_key:/etc/ssh/ssh_key                   \
+                         --net=host                                                     \
+                         dockerhub.hi.inet/5ghacking/ansible:2.9.7-2                    \
+                         -i /5glab/inventory-development                                \
                          bootstrap.yml
                        '''
                 }
