@@ -6,7 +6,7 @@ pipeline {
         withCredentials(awsCredentials)
     }
     environment {
-        MESSAGE   = 'demo k8s-deployed'
+        MESSAGE   = 'demo-k8s-deployed'
         QUEUE_URL = 'https://sqs.eu-west-3.amazonaws.com/709233559969/5GnowSQS'
     }
     stages {
