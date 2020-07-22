@@ -19,11 +19,11 @@ pipeline {
                          -w /srv                                                        \
                          -v $(pwd)/ansible:/srv                                         \
                          -v $(pwd)/pac/5glab:/5glab                                     \
-                         -v $(pwd)/pac/5glab/ssh_config_demo:/etc/ssh/ssh_config        \
-                         -v $(pwd)/pac/5glab/ssh_key:/etc/ssh/ssh_key                   \
+                         -v $(pwd)/ansible/ssh_config_demo:/etc/ssh/ssh_config        \
+                         -v $(pwd)/ansible/ssh_key:/etc/ssh/ssh_key                   \
                          --net=host                                                     \
                          dockerhub.hi.inet/5ghacking/ansible:2.9.7-2                    \
-                         -i /5glab/inventory-demo                                       \
+                         -i /srv/inventory-demo                                       \
                          bootstrap.yml
                        '''
                 }
