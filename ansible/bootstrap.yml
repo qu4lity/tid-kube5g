@@ -1,0 +1,14 @@
+---
+- name: Bootstrap cloned image
+  tags: bootstap
+  hosts: target
+  gather_facts: yes
+  vars:
+    apt_updated: "0"
+  roles:
+    - role: bootstrap
+      when: want_kubernetes_master or want_kubernetes_worker
+    - role: multinic
+      when: want_multinic is defined and want_multinic
+    - software
+    - cleanup

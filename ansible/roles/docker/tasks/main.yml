@@ -1,0 +1,63 @@
+---
+- name: Install docker.io
+  become: yes
+  apt:
+    update_cache: yes
+    autoremove: yes
+    state: present
+    force: yes
+    name: docker.io{{ docker_version }}
+
+- name: adding existing user '{{ ansible_user }}' to group docker
+  become: yes
+  user:
+    name: '{{ ansible_user }}'
+    groups: docker
+    append: yes
+
+- name: setup cgroupdriver as systemd
+  become: yes
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/docker/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - daemon.json
+
+- name: restart docker service
+  become: yes
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes
+
+- name: search registry certificate
+  shell: 'find . -name registry*.crt | cut -f 2 -d "/" | cut -f 1,2 -d "."'
+  register: registry_name
+  delegate_to: localhost
+
+- name: Ensure /etc/docker/certs.d/{{ registry_name.stdout }} exists if certificate exists
+  become: yes
+  file:
+    path: /etc/docker/certs.d/{{ registry_name.stdout }}
+    state: directory
+  when: registry_name.stdout
+
+- name: copy registry certificate if exists
+  become: yes
+  copy:
+    src: "{{ registry_name.stdout }}.crt"
+    dest: "/etc/docker/certs.d/{{ registry_name.stdout }}/{{ registry_name.stdout }}.crt"
+  when: registry_name.stdout
+
+- name: Ensure /etc/docker/certs.d/dockerhub.hi.inet exists
+  become: yes
+  file:
+    path: "/etc/docker/certs.d/dockerhub.hi.inet"
+    state: directory
+
+- name: Download cert from dockerhub.hi.inet
+  become: yes
+  shell: 'echo | openssl s_client -servername dockerhub.hi.inet -connect dockerhub.hi.inet:443 | sed -ne "/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p" > /etc/docker/certs.d/dockerhub.hi.inet/dockerhub_hi_inet.crt'

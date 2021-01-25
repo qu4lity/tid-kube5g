@@ -1,0 +1,13 @@
+---
+- name: Setup flannel CIDR
+  template:
+    src: flannel.yaml.j2
+    dest: /tmp/flannel.yaml
+  delegate_to: "{{ deployer }}"
+
+- name: Deploy Flannel SDN
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: present
+    src: /tmp/flannel.yaml
+  delegate_to: "{{ deployer }}"

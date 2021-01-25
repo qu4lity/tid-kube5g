@@ -1,0 +1,23 @@
+[Unit]
+Description=Docker Registry Container
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop registry
+ExecStartPre=-/usr/bin/docker rm registry
+ExecStartPre=-/usr/bin/docker pull registry:2
+ExecStart=/usr/bin/docker run \
+                          -v /srv/registry:/var/lib/registry \
+                          -v /etc/docker/certs.d/{{ inventory_hostname }}:/srv/certs \
+                          -e REGISTRY_HTTP_TLS_CERTIFICATE=/srv/certs/{{ inventory_hostname }}.crt \
+                          -e REGISTRY_HTTP_TLS_KEY=/srv/certs/{{ inventory_hostname }}.key \
+                          -p 443:5000 \
+                          --name registry \
+                          registry:2
+ExecStop=-/usr/bin/docker stop registry
+
+[Install]
+WantedBy=multi-user.target

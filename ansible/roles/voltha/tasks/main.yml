@@ -1,0 +1,85 @@
+---
+- name: Install dependencies
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop:
+    - curl
+    - jq
+
+- name: Ensure ~/.kube/config exists
+  file:
+    state: directory
+    path: ~/.kube/
+
+- name: Upload kube.config
+  copy:
+    src: kube.config
+    dest: ~/.kube/config
+    mode: 0644
+
+- name: Clone Voltha repository
+  git:
+    repo: 'https://github.com/opencord/kind-voltha.git'
+    dest: ~/kind-voltha
+    version: master
+
+- name: Include kind-voltha binaries in path
+  lineinfile:
+    path: ~/.profile
+    state: present
+    insertafter: EOF
+    line: 'PATH=~/kind-voltha/bin:$PATH'
+
+- name: Modified voltha script
+  copy:
+    src: onos-lb.yaml
+    dest: /home/sysadmin/onos-lb.yaml
+    mode: 0664
+
+
+- name: Create a onos-app directory
+  file:
+    path: /home/sysadmin/kind-voltha/onos-files/onos-apps
+    state: directory
+    mode: '0755'
+
+- name: Download Autoprovision App
+  tags: onos_apps
+  include: install-app.yml
+
+#This is not a correct way to launch voltha, pending improvement
+- name: Create script to start Voltha & ONOS
+  blockinfile:
+    path: /home/sysadmin/kind-voltha/start_voltha_onos.sh
+    create: yes
+    marker: ""
+    mode: "1777"
+    block: |
+      #!/usr/bin/env bash
+      yes | sudo apt install snapd
+      yes | sudo snap install yq
+      export PATH=/snap/bin:$PATH
+      cd /home/sysadmin/kind-voltha/
+      rm -f started
+      export TYPE=full
+      export DEPLOY_K8S=no
+      export WITH_ONOS=classic
+      export INSTALL_ONOS_APPS=no
+      export WITH_BBSIM=no
+      export WITH_RADIUS=no
+      export SCHEDULE_ON_CONTROL_NODES=yes
+      export CONFIG_SADIS=no
+      export NUM_OF_ATOMIX=3
+      export NUM_OF_ONOS=2
+      source voltha up
+      touch started
+      echo "STARTED" > started
+
+- name: Up voltha and ONOS
+  shell:
+    cmd: "/home/sysadmin/kind-voltha/start_voltha_onos.sh"
+  args:
+    executable: /bin/bash

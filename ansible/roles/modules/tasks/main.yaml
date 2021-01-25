@@ -1,0 +1,12 @@
+- name: Add 8021q to persistence
+  become: yes
+  lineinfile:
+    path: /etc/modules
+    insertafter: EOF
+    state: present
+
+- name: Add the 802.1q module
+  beome: yes
+  modprobe:
+    name: 8021q
+    state: present

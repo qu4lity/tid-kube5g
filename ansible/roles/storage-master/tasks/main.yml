@@ -1,0 +1,59 @@
+---
+- name: Install nfs kernel
+  become: yes
+  apt:
+    name: nfs-kernel-server
+    state: latest
+
+- name: make volume
+  become: yes
+  file:
+    path: '/opt/volA'
+    state: directory
+    recurse: yes
+    mode: '1777'
+
+- name: create pv1
+  k8s:
+    kubeconfig: kube.config
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: pvol-1
+      spec:
+        capacity:
+          storage: 1Gi
+        accessModes:
+          - ReadWriteOnce
+        persistentVolumeReclaimPolicy: Retain
+        volumeMode: Filesystem
+        nfs:
+          path: /opt/volA/cfg
+          server: k8s.local
+          readOnly: false
+  delegate_to: localhost
+
+- name: pv claim
+  k8s:
+    kubeconfig: kube.config
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        name: upf-cfg-claim0
+        namespace: default
+      labels:
+        io.kompose.service: upf-cfg-claim0
+        name: upf-cfg-claim0
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+        volumeMode: Filesystem
+  delegate_to: localhost

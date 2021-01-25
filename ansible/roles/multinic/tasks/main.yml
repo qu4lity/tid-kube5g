@@ -1,0 +1,23 @@
+- name: Get physical network list
+  command: find /sys/class/net -type l -not -lname '*virtual*' -printf '%f\n'
+  register: list_iface
+  when: external_interface is undefined
+
+- name: Remove default interface
+  set_fact:
+    external_interface: "{{ list_iface.stdout_lines | difference([ansible_default_ipv4.interface]) | first }}"
+  ignore_errors: true
+  when: external_interface is undefined
+
+- debug:
+    msg: Gathered Interface is {{ external_interface }}
+  when: external_interface is defined
+
+- name: extnet parent ifup
+  become: yes
+  shell:
+    cmd:  |
+      ip link set {{ external_interface }} up
+      vconfig add {{ external_interface }} {{ external_vlan }}
+      ip link set {{ external_interface }}.{{ external_vlan }} up
+  when: external_interface is defined

@@ -1,0 +1,91 @@
+[target]
+
+# Example of baremetal host preparation (careful here required machine reboot)
+<replace_with_your_baremetal_hostname> want_kvmhost=True want_multinic=True want_libvirt=True bridge_name=<replace_with_ip_mask> bridge_gw=<replace_with_gw_ip>
+
+# Example of Kubernetes cluster without multi-nic support for containers
+<replace_with_k8s_master_hostname> want_kubernetes_master=True
+<replace_with_k8s_worker_hostname> want_kubernetes_worker=True
+<replace_with_k8s_worker_hostname> want_kubernetes_worker=True
+<replace_with_k8s_worker_hostname> want_kubernetes_worker=True
+
+# Example of Kubernetes cluster with Docker, Flannel and Multus
+<replace_with_k8s_master_hostname> want_kubernetes_master=True want_flannel=True want_multus=False
+<replace_with_k8s_worker_hostname> want_kubernetes_worker=True
+<replace_with_k8s_worker_hostname> want_kubernetes_worker=True
+<replace_with_k8s_worker_hostname> want_kubernetes_worker=True
+
+# Example of Kubernetes cluster with CRI-O, Calico and MetalLB
+<replace_with_k8s_master_hostname> want_kubernetes_master=True want_calico=True want_docker=False want_crio=True want_metallb=True
+<replace_with_k8s_worker_hostname> want_kubernetes_worker=True want_docker=False want_crio=True
+<replace_with_k8s_worker_hostname> want_kubernetes_worker=True want_docker=False want_crio=True
+<replace_with_k8s_worker_hostname> want_kubernetes_worker=True want_docker=False want_crio=True
+
+# Docker registry
+registry.local want_registry=True
+
+# VOLTHA operator
+voltha.local want_voltha=True
+
+[target:vars]
+# Globals
+github_user=<replace_with_your_github_username>
+ansible_user=<replace_with_ansible_username>
+ansible_password=<replace_with_ansible_password>
+ansible_become_password=<replace_with_ansible_become_password>
+ansible_python_interpreter=/usr/bin/python3
+
+# The hostname creating/deleting/applying kube resources
+deployer=<replace_with_deployer_hostname>
+
+# Tools (change here if you want to apply to any machine)
+want_terraform=False
+want_packer=False
+want_vagrant=False
+want_ansible=False
+want_libvirt=False
+
+# Docker runtime support for k8s (deprecated since 1.20)
+want_docker=True
+want_registry=False
+
+# VPN Wireguard pod
+want_wireguard=False
+
+# CRIO Container runtime
+want_crio=False
+
+# VOLTHA
+want_voltha=False
+want_dynamic_pv=False
+
+# MultiNIC
+external_vlan=<replace_with_your_vlan_number>
+
+# Speedtest demo
+want_speedtest=False
+
+# Kubernetes profiles (these should remain as they are, to be specialized in the host declaration)
+want_kubernetes_master=False
+want_kubernetes_worker=False
+
+# Kubernetes Networking
+want_multinic=False
+want_multus=False
+want_metallb=False
+want_calico=False
+want_flannel=False
+
+# Kubernetes 1.18.3 installing last docker version
+kubernetes_version='1.18.3'
+docker_version='' # This will install latest docker version
+
+# Kubernetes 1.15 installation specifying docker version
+kubernetes_version='1.15.11'
+docker_version='=18.09.7-0ubuntu1~18.04.4' # This will specify a previous one for compatibility purposes, please note '='
+
+# Kubernetes globals replace with your specific ip addressing setup
+pod_network_cidr='192.168.0.0/16'
+metallb_ip_pool='192.168.1.100-192.168.1.110'
+apiserver_port_range='30000-64000'
+max_pods=200

@@ -1,0 +1,13 @@
+- name: Modify plugin flag Default Storage
+  become: yes
+  lineinfile:
+    path: /etc/kubernetes/manifests/kube-apiserver.yaml
+    line: "   - --enable-admission-plugins=DefaultStorageClass"
+    insertafter: '   - --tls-private-key-file=/etc/kubernetes/pki/apiserver.key'
+
+- name: Modify enable host-path provisioner
+  become: yes
+  lineinfile:
+    path: /etc/kubernetes/manifests/kube-controller-manager.yaml
+    line: "   - --enable-hostpath-provisioner=true"
+    insertafter: '   - --use-service-account-credentials=true'

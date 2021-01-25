@@ -1,0 +1,5 @@
+dependencies:
+    - role: network-bridge
+      when: ansible_facts['default_ipv4']['interface'] != "{{ bridge_name }}"
+    - role: libvirt-bridge
+      when: want_libvirt is defined and want_libvirt

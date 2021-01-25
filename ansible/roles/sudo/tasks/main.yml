@@ -1,0 +1,8 @@
+---
+- name: Enable sudo group users to be passwordless
+  become: yes
+  template:
+    src: "10-sudo.j2"
+    dest: "/etc/sudoers.d/10-sudo"
+    owner: root
+    group: root

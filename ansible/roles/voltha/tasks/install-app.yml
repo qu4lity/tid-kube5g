@@ -1,0 +1,4 @@
+- name: Get Onos App autoprovision
+  get_url:
+    url: "http://artifactory.hi.inet/artifactory/misc-oln/snapshot/ctpd-autoprovision/ctpd-autoprovision-2.2.1.oar "
+    dest: /home/sysadmin/kind-voltha/onos-files/onos-apps/ctpd-autoprovision.oar

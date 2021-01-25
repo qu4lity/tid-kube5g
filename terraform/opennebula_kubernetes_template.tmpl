@@ -1,0 +1,27 @@
+CONTEXT = [
+  NETWORK = "YES",
+  USERNAME = "sysadmin",
+  SSH_PUBLIC_KEY = "${file("~/.ssh/id_rsa.pub")}",
+  SET_HOSTNAME = "$NAME"
+]
+CPU = "8"
+VCPU = "8"
+CPU_MODEL = [
+  MODEL = "host-passthrough" ]
+DISK = [
+  IMAGE = "Ubuntu 18.04from market",
+  IMAGE_UNAME = "oneadmin",
+  SIZE = "40480" ]
+GRAPHICS = [
+  LISTEN = "0.0.0.0",
+  TYPE = "VNC" ]
+HYPERVISOR = "kvm"
+MEMORY = "8192"
+MEMORY_UNIT_COST = "MB"
+NIC = [
+  NETWORK = "OLN_MGMT",
+  NETWORK_UNAME = "oneadmin",
+  SECURITY_GROUPS = "0" ]
+OS = [
+  ARCH = "x86_64" ]
+SCHED_REQUIREMENTS = "ID=\"1\""

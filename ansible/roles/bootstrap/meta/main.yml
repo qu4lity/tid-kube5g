@@ -1,0 +1,5 @@
+---
+dependencies:
+    - sudo
+    - user
+    - apt

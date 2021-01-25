@@ -1,0 +1,66 @@
+---
+- name: Add needed GPG keys
+  become: yes
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  loop:
+    - https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_18.04/Release.key
+
+- name: Add necessary apt repositories
+  become: yes
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop:
+    - deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_18.04/ /
+
+- name: Load kernel modules
+  become: yes
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - overlay
+    - br_netfilter
+
+- name: Persist kernel modules across reboots
+  become: yes
+  lineinfile:
+    path: /etc/modprobe.d/crio.conf
+    state: present
+    create: yes
+    line: "{{ item }}"
+  loop:
+    - overlay
+    - br_netfilter
+
+- name: Update sysctl values
+  become: yes
+  sysctl:
+    name: "{{ item }}"
+    value: '1'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  loop:
+    - net.bridge.bridge-nf-call-iptables
+    - net.ipv4.ip_forward
+    - net.bridge.bridge-nf-call-ip6tables
+
+- name: Install CRI-O
+  become: yes
+  apt:
+    state: latest
+    name: "{{ item }}"
+  loop:
+    - cri-o-1.17
+    - runc
+
+- name: Enable CRI-O service
+  become: yes
+  systemd:
+    state: started
+    enabled: yes
+    name: crio
+    daemon_reload: yes

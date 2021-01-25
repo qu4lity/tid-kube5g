@@ -1,0 +1,45 @@
+---
+dependencies:
+    - git
+    - vim
+    - unzip
+    - role: ansible
+      when: want_ansible is defined and want_ansible
+    - role: terraform
+      when: want_terraform is defined and want_terraform
+    - role: packer
+      when: want_packer is defined and want_packer
+    - role: vagrant
+      when: want_vagrant is defined and want_vagrant
+    - role: registry
+      when: want_registry is defined and want_registry
+    - role: docker
+      when: want_docker is defined and want_docker
+    - role: crio
+      when: want_crio is defined and want_crio
+    - role: libvirt
+      when: want_libvirt is defined and want_libvirt
+    - role: kubernetes-master
+      when: want_kubernetes_master is defined and want_kubernetes_master
+    - role: kubernetes-worker
+      when: want_kubernetes_worker is defined and want_kubernetes_worker
+    - role: k8s-creds
+      when: want_creds is defined and want_creds
+    - role: calico
+      when: want_calico is defined and want_calico
+    - role: flannel
+      when: want_flannel is defined and want_flannel
+    - role: metallb
+      when: want_metallb is defined and want_metallb
+    - role: multus
+      when: want_multus is defined and want_multus
+    - role: dynamic-pv
+      when: want_dynamic_pv is defined and want_dynamic_pv
+    - role: voltha
+      when: want_voltha is defined and want_voltha
+    - role: demo
+      when: want_demo is defined and want_demo
+    - role: speedtest
+      when: want_speedtest is defined and want_speedtest
+    - role: wireguard
+      when: want_wireguard is defined and want_wireguard

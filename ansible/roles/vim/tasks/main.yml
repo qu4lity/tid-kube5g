@@ -1,0 +1,7 @@
+---
+- name: Install vim
+  become: yes
+  apt:
+    update_cache: yes
+    state: latest
+    name: ['vim']

@@ -1,0 +1,39 @@
+---
+# As seen in https://github.com/ansible/ansible/issues/16593#issuecomment-477259635
+- name: Wait for automatic system updates
+  become: true
+  shell: while sudo fuser /var/lib/dpkg/{{ item }} >/dev/null 2>&1; do sleep 1; done;
+  with_items:
+    - lock
+    - lock-frontend
+
+- name: Update all packages to the latest version
+  become: yes
+  apt:
+    upgrade: dist
+    update_cache: yes
+
+- name: Install software-properties-common
+  become: yes
+  apt:
+    name: software-properties-common
+    state: latest
+
+- name: Install vlan
+  become: yes
+  apt:
+    name: vlan
+    state: latest
+
+- name: Delete ufw
+  become: yes
+  apt:
+    name: ufw
+    purge: yes
+    state: absent
+
+- name: Install python3-lxml
+  become: yes
+  apt:
+    name: python3-lxml
+    state: latest

@@ -1,0 +1,12 @@
+---
+- name: search registry certificate
+  shell: 'find . -name registry*.crt | cut -f 2 -d "/" | cut -f 1,2 -d "."'
+  register: registry_name
+  delegate_to: localhost
+
+- name: Remove registry certificate if present
+  file:
+    path: "{{registry_name.stdout}}.crt"
+    state: absent
+  when: registry_name.stdout
+  delegate_to: localhost
