@@ -1,0 +1,31 @@
+[bastion]
+bastion.tid-kube5g.tk
+
+[vepcaws]
+vepc.tid-kube5g.tk
+
+[epc_onpremise]
+10.95.164.110 ansible_user='labuser' ansible_ssh_pass='<Insert_user_password>' ansible_ssh_port=20022 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[targets]
+k8s ansible_ssh_pass='SetecAstronomy' want_kubernetes_master=True
+k8s-worker1 ansible_ssh_pass='SetecAstronomy' want_kubernetes_worker=True
+k8s-worker2 ansible_ssh_pass='SetecAstronomy' want_kubernetes_worker=True
+k8s-worker3 ansible_ssh_pass='SetecAstronomy' want_kubernetes_worker=True
+10.95.164.110 ansible_user='labuser' ansible_ssh_pass='<Insert_user_password>' ansible_ssh_port=20022 ansible_ssh_common_args='-o StrictHostKeyChecking=no' want_5glab=True want_upf=True want_st=True want_cv=True want_ecr=True
+
+[epc_onpremise:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[pxe]
+10.95.164.110 ansible_user='labuser' ansible_ssh_pass='<Insert_user_password>' ansible_ssh_port=20022 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[all:vars]
+external_vlan=5
+want_kubernetes_master=False
+want_kubernetes_worker=False
+want_upf=False
+want_st=False
+want_cv=False
+want_ecr=False
+want_5glab=False

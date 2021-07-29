@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: computer-vision
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: computer-vision
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[{
+        "name": "macvlan-conf",
+        "ips":["192.168.50.35"],
+        "default-route": ["192.168.50.1"]
+        }]'
+      labels:
+        app: computer-vision
+    spec:
+      imagePullSecrets:
+      - name: eu-west-3-ecr-registry
+      containers:
+      - name: computer-vision-mqtt
+        image: 709233559969.dkr.ecr.eu-west-3.amazonaws.com/computer-vision:computer-vision-mqtt-3.0
+      - name: computer-vision-nginx
+        image: 709233559969.dkr.ecr.eu-west-3.amazonaws.com/computer-vision:computer-vision-nginx-4.0
+      - name: computer-vision-front
+        image: 709233559969.dkr.ecr.eu-west-3.amazonaws.com/computer-vision:computer-vision-front-4.0
+      - name: computer-vision-video
+        image: 709233559969.dkr.ecr.eu-west-3.amazonaws.com/computer-vision:computer-vision-video-4.0
+      - name: computer-vision-back
+        image: 709233559969.dkr.ecr.eu-west-3.amazonaws.com/computer-vision:computer-vision-back-3.0
+
+

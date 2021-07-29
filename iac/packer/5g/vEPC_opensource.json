@@ -1,0 +1,88 @@
+{
+    "description": "Docker-capable AMI for Amazon EC2",
+
+    "variables": {
+      "ssh_username": "ubuntu",
+      "instance_type": "t2.small",
+      "aws_region": "eu-west-3",
+      "version": "focal",
+      "cpf_ver":"",
+      "git_user":"",
+      "git_pwd":""
+    },
+
+    "builders": [{
+      "type": "amazon-ebs",
+      "source_ami":"ami-0e60c6afa19d896ee",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "instance_type": "{{user `instance_type`}}",
+      "region": "{{user `aws_region`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ami_name": "ubuntu-20.04-vEPC_opensource-{{user `version`}}",
+      "ami_groups": ["all"]
+    }],
+
+    "provisioners": [
+      {
+        "type": "shell",
+        "execute_command": "echo '{{user `password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+        "inline": [
+          "echo '%sudo    ALL=(ALL)  NOPASSWD:ALL' >> /etc/sudoers"
+        ]
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "sudo apt-get -y update",
+          "sudo apt-get -yq install software-properties-common",
+          "sudo apt-get -yq install python3-pip",
+          "pip3 install ansible --user",
+          "sudo apt-get -qy install git ansible",
+          "ssh-keyscan github.com >> ~/.ssh/known_hosts",
+          "git config --global advice.detachedHead false",
+          "git clone https://{{user `git_user`}}:{{user `git_pwd`}}@github.com/Telefonica/docker-open5gs.git /home/{{user `ssh_username`}}/epc",
+          "cd /home/{{user `ssh_username`}}/epc",
+          "git checkout {{user `cpf_ver`}}",
+          "echo 'localhost ansible_connection=local' | tee /home/{{user `ssh_username`}}/inventory",
+          "ansible-playbook -i /home/{{user `ssh_username`}}/inventory --user={{user `ssh_username`}} -b /home/{{user `ssh_username`}}/epc/playbookdisskube.yml"
+        ]
+      },
+
+      {
+        "type": "shell",
+        "inline": [
+          "echo '[Unit]\\nDescription=Set %i interface in promiscuous mode\\nAfter=network.target\\n\\n[Service]\\nType=oneshot\\nExecStart=/sbin/ip link set dev %i promisc on\\nRemainAfterExit=yes\\n\\n[Install]\\nWantedBy=multi-user.target' | sudo tee /etc/systemd/system/promiscuous@.service",
+          "cat /etc/systemd/system/promiscuous@.service",
+          "sudo systemctl enable promiscuous@eth0.service"
+        ]
+      },
+
+      {
+        "type": "shell-local",
+        "inline": ["mv playbookDPI.yml edgedpi/"]
+      },
+
+      {
+        "type": "file",
+        "source": "edgedpi",
+        "destination": "/home/{{user `ssh_username`}}/"
+      },
+
+      {
+        "type": "shell",
+        "inline": [
+          "cd edgedpi/ ",
+          "echo 'localhost ansible_connection=local' | tee /home/{{user `ssh_username`}}/edgedpi/inventory",
+          "ansible-playbook -i /home/{{user `ssh_username`}}/edgedpi/inventory --user={{user `ssh_username`}} -b /home/{{user `ssh_username`}}/edgedpi/playbookDPI.yml"
+        ]
+      }
+    ]
+  }
+

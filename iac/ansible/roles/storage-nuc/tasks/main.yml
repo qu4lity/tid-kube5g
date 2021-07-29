@@ -1,0 +1,43 @@
+---
+- name: create pv1
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: pvol-1
+      spec:
+        capacity:
+          storage: 1Gi
+        accessModes:
+          - ReadWriteOnce
+        persistentVolumeReclaimPolicy: Retain
+        volumeMode: Filesystem
+        nfs:
+          path: /opt/volA/cfg
+          server: corenet1.lab
+          readOnly: false
+
+- name: pv claim
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        name: upf-cfg-claim0
+        namespace: default
+      labels:
+        io.kompose.service: upf-cfg-claim0
+        name: upf-cfg-claim0
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+        volumeMode: Filesystem

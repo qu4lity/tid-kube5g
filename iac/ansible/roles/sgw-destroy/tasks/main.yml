@@ -1,0 +1,13 @@
+---
+- name: prepare sgw yaml
+  template:
+    src: sgw.yaml.j2
+    dest: /tmp/sgw.yaml
+
+- name: destroy sgw
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: absent
+    namespace: default
+    src: /tmp/sgw.yaml
+

@@ -1,0 +1,45 @@
+{
+  "description": "Docker-capable AMI for Amazon EC2",
+
+  "variables": {
+    "ssh_username": "ubuntu",
+    "instance_type": "t2.small",
+    "aws_region": "eu-central-1",
+    "version": ""
+  },
+
+  "builders": [{
+    "type": "amazon-ebs",
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+        "name": "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*",
+        "root-device-type": "ebs"
+      },
+      "owners": ["099720109477"],
+      "most_recent": true
+    },
+    "instance_type": "{{user `instance_type`}}",
+    "region": "{{user `aws_region`}}",
+    "ssh_username": "{{user `ssh_username`}}",
+    "ami_name": "ubuntu-18.04-docker-{{user `version`}}",
+    "ami_groups": ["all"]
+  }],
+
+  "provisioners": [
+    {
+    "type": "shell",
+    "inline": [
+      "sudo apt-get -y update",
+      "sudo apt-get -yq install software-properties-common",
+      "sudo apt-add-repository --yes ppa:ansible/ansible",
+      "sudo apt-get -y update",
+      "sudo apt-get install -yq ansible"
+      ]
+    },
+    {
+    "type": "ansible-local",
+    "playbook_file": "../../ansible/core/playbookDocker.yml"
+    }
+  ]
+}

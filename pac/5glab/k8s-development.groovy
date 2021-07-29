@@ -1,4 +1,6 @@
-def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: '047a2523-0a76-477f-a24d-17efc60b6a82', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]
+// @TODO: Introduce awsCredentials
+def awsCredentials = [[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: '<INSERT_AWS_Credentials_ID>', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]
+
 pipeline {
     agent { node {label 'prod-nc-slave-02'}  }
     options {
@@ -22,7 +24,7 @@ pipeline {
                          -v $(pwd)/ansible/ssh_config_development:/etc/ssh/ssh_config_development \
                          -v $(pwd)/ansible/ssh_key_development:/etc/ssh/ssh_key                   \
                          --net=host                                                     \
-                         dockerhub.hi.inet/5ghacking/ansible:2.9.7-2                    \
+                         dockerhub.hi.inet/tid-kube5ging/ansible:2.9.7-2                    \
                          -i /srv/inventory-development                                \
                          bootstrap.yml
                        '''

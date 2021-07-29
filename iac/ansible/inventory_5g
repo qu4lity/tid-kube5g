@@ -1,0 +1,35 @@
+[bastion]
+bastion.tid-kube5g.tk ansible_user='ubuntu'
+
+[vepcaws]
+vepc.tid-kube5g.tk
+
+[epc_onpremise]
+10.95.164.110 ansible_ssh_port=20032 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[targets]
+corenet1 want_kubernetes_master=True
+corenet2 want_kubernetes_worker=True external_interface='enp129s0f0'
+10.95.164.110 ansible_ssh_port=20032 ansible_ssh_common_args='-o StrictHostKeyChecking=no' want_5glab=True want_upf=True want_st=True want_ecr=True
+
+[epc_onpremise:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+# Aggregate workers
+want_kubernetes_master=False
+want_kubernetes_worker=False
+want_onpremise=False
+
+[all:vars]
+ansible_user='labuser'
+ansible_ssh_pass='<Insert_user_password>'
+ansible_become_password='<Insert_root_password>'
+metal_user='labuser'
+external_vlan=5
+want_kubernetes_master=False
+want_kubernetes_worker=False
+want_upf=False
+want_st=False
+want_cv=False
+want_ecr=False
+want_5glab=False

@@ -1,0 +1,13 @@
+- name: Fetch kubernetes config file
+  become: yes
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: kube.config
+    flat: yes
+  when:  want_kubernetes_master is defined and want_kubernetes_master
+
+- name: copy kubernetes config file
+  copy:
+    src: kube.config
+    dest: /tmp/kube.config
+  when:  want_5glab is defined and want_5glab

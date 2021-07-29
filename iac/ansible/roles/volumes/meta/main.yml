@@ -1,0 +1,8 @@
+---
+dependencies:
+  - role: storage-master
+    when: want_kubernetes_master is defined and want_kubernetes_master
+  - role: storage-nuc
+    when: want_5glab is defined and want_5glab
+  - role: storage-worker
+    when: want_kubernetes_worker is defined and want_kubernetes_worker

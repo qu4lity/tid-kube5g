@@ -1,0 +1,32 @@
+---
+- name: Put servers in build mode
+  uri:
+    url: "{{ item }}"
+    method: PUT
+  loop:
+    - http://nuc8.lab:9090/build/corenet1.lab
+    - http://nuc8.lab:9090/build/corenet2.lab
+
+- name: Login into IPMI
+  shell: "curl -d 'name=labuser&pwd=labpassword' 'https://ipmicorenet1.lab/cgi/login.cgi' --silent --insecure -i | awk '/Set-Cookie/ && NR != 2 { print $2 }'"
+  register: IPMI_COOKIE_1
+
+- name: Login into IPMI
+  shell: "curl -d 'name=labuser&pwd=labpassword' 'https://ipmicorenet2.lab/cgi/login.cgi' --silent --insecure -i | awk '/Set-Cookie/ && NR != 2 { print $2 }'"
+  register: IPMI_COOKIE_2
+
+- name: Restart servers
+  shell: "curl 'https://ipmicorenet1.lab/cgi/ipmi.cgi' \
+              -XPOST                    \
+              -H 'Cookie: {{ IPMI_COOKIE_1.stdout }}'      \
+              --data 'POWER_INFO.XML=(1%2C3)&time_stamp=Tue%20Jun%2027%202017%2010%3A30%3A57%20GMT-0400%20(EDT)&_=' \
+              --insecure \
+              --silent &> /dev/null"
+
+- name: Restart servers
+  shell: "curl 'https://ipmicorenet2.lab/cgi/ipmi.cgi' \
+              -XPOST                                   \
+              -H 'Cookie: {{ IPMI_COOKIE_2.stdout }}'         \
+              --data 'POWER_INFO.XML=(1%2C3)&time_stamp=Tue%20Jun%2027%202017%2010%3A30%3A57%20GMT-0400%20(EDT)&_=' \
+              --insecure \
+              --silent &> /dev/null"
