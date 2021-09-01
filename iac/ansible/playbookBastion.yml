@@ -1,0 +1,91 @@
+---
+- hosts: bastion
+  become: yes
+  become_method: sudo
+  remote_user: ubuntu
+  gather_facts: no
+  pre_tasks:
+    - name: 'install python3'
+      raw: apt-get -y install python3
+
+  tasks:
+    - name: Install strongswan
+      apt:
+        name: strongswan
+        state: present
+        update_cache: true
+
+    - name: Start strongswan on boot
+      shell: systemctl enable strongswan
+
+    - name: Add parameters to sysctl.conf
+      blockinfile:
+        path: /etc/sysctl.conf
+        insertafter: '### IPSEC'
+        state: present
+        block: |
+          net.ipv4.ip_forward = 1
+          net.ipv4.conf.all.send_redirects = 0
+          net.ipv4.conf.default.send_redirects = 0
+          net.ipv4.tcp_max_syn_backlog = 1280
+          net.ipv4.icmp_echo_ignore_broadcasts = 1
+          net.ipv4.conf.all.accept_source_route = 0
+          net.ipv4.conf.all.accept_redirects = 0
+          net.ipv4.conf.all.secure_redirects = 0
+          net.ipv4.conf.all.log_martians = 1
+          net.ipv4.conf.default.accept_source_route = 0
+          net.ipv4.conf.default.accept_redirects = 0
+          net.ipv4.conf.default.secure_redirects = 0
+          net.ipv4.icmp_echo_ignore_broadcasts = 1
+          net.ipv4.icmp_ignore_bogus_error_responses = 1
+          net.ipv4.tcp_syncookies = 1
+          net.ipv4.conf.all.rp_filter = 1
+          net.ipv4.conf.default.rp_filter = 1
+          net.ipv4.tcp_mtu_probing = 1
+
+    - name: Modify kernel attributes
+      shell: sysctl -p /etc/sysctl.conf
+
+    - name: Add ipsec secret
+      blockinfile:
+        path: /etc/ipsec.secrets
+        insertafter: '# source      destination'
+        state: present
+        block: |
+           : PSK "5gpentacornio-darkstar"
+
+    - name: Add vpn configuration
+      blockinfile:
+        path: /etc/ipsec.conf
+        insertafter: '## IPSEC conf'
+        state: present
+        block: |
+          # basic configuration
+          config setup
+                  charondebug="all"
+                  uniqueids=yes
+                  strictcrlpolicy=no
+
+          # connection bastion-to-eNB
+          conn bastion-to-eNB
+            left=%defaultroute
+            leftsubnet={{ bastion_private_subnet }}
+            leftfirewall=no
+            rightsubnet={{ remote_node_private_subnet }}
+            right=%any
+            ike=aes256-sha1-modp2048!
+            esp=aes128-sha1-modp2048!
+            auto=add
+            keyexchange=ikev2
+            reauth=no
+            keyingtries=%forever
+            keylife=3600s
+            rekeymargin=540s
+            ikelifetime=28800s
+            dpddelay=15s
+            dpdtimeout=30s
+            authby=secret
+            forceencaps=yes
+
+    - name: Restart ipsec
+      shell: ipsec restart

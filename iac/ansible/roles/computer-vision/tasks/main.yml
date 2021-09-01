@@ -1,0 +1,11 @@
+---
+- name: Deploy computer vision yaml
+  template:
+    src: computer-vision.yaml.j2
+    dest: /tmp/computer-vision.yaml
+
+- name: Deploy computer vision
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: present
+    src: /tmp/computer-vision.yaml

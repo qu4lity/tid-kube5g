@@ -1,0 +1,6 @@
+---
+- name: pxe playbook
+  hosts: pxe
+  gather_facts: yes
+  roles:
+    - pxe

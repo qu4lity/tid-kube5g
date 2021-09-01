@@ -20,6 +20,13 @@ Miscallaneous documentation regarding networking, load balancer and storage topi
 
 ## Getting Started
 
+
+## IMPORTANT CREDENTIALES
+There are two parameters in the code that you have to substitute with your own values in order to execute the code
+
+'<INSERT_AWS_Credentials_ID>' <--> You have to include the ID of the Jenkins credentials of your AWS Account
+'<Insert_user_password>' <--> Password of the user that will be created 
+
 ### KVM Host networking setup
 
 The kvm.yaml playbook supports setting up the networking infrastructure of a KVM host with the bridging necessary for supporting Intel Multus later in the bootstrap playbook.

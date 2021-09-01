@@ -1,0 +1,15 @@
+---
+    - hosts: all
+      become: true
+      tasks:
+      - name: build
+        docker_compose:
+          project_src: .
+          files: docker-compose.yml
+          build: yes
+          state: "present"
+        register: output
+
+      - debug:
+          var: output
+

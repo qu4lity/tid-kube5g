@@ -1,0 +1,12 @@
+---
+- name: prepare pcrf yaml
+  template:
+    src: pcrf.yaml.j2
+    dest: /tmp/pcrf.yaml
+
+- name: Destroy pcrf
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: absent
+    namespace: default
+    src: /tmp/pcrf.yaml

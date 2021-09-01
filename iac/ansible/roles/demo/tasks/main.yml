@@ -1,0 +1,6 @@
+---
+- name: Copy kube.config to /tmp for awesome-tid-kube5g
+  copy:
+    src: /tmp/kube.config
+    dest: /tmp/kube.config
+  delegate_to: "{{ deployer }}"

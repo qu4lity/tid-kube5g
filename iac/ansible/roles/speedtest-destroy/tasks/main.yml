@@ -1,0 +1,11 @@
+---
+- name: Deploy speedtest yaml
+  template:
+    src: speedtest.yaml.j2
+    dest: /tmp/speedtest.yaml
+
+- name: Destroy speedtest
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: absent
+    src: /tmp/speedtest.yaml

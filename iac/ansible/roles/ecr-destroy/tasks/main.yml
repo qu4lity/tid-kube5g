@@ -1,0 +1,25 @@
+---
+- name: prepare service account yaml
+  template:
+    src: sv-account.yaml.j2
+    dest: /tmp/sv-account.yaml
+
+- name: prepare cron yaml
+  template:
+    src: cron.yaml.j2
+    dest: /tmp/cron.yaml
+
+- name: delete service account
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: absent
+    src: /tmp/sv-account.yaml
+
+- name: delete cron
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: absent
+    src: /tmp/cron.yaml
+
+- name: delete cron job
+  command: kubectl --kubeconfig=/tmp/kube.config delete job creds

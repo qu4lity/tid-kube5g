@@ -1,0 +1,9 @@
+---
+- name: check if k8s master is already initialized
+  wait_for:
+    host: corenet1
+    port: 6443
+    state: present
+    timeout: 10
+  register: apiserver_check
+  ignore_errors: true

@@ -1,4 +1,0 @@
-- name: copy kubernetes config file
-  copy:
-    src: kube.config
-    dest: /tmp/kube.config

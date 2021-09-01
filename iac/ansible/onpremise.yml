@@ -1,0 +1,25 @@
+---
+- name: onpremise playbook
+  hosts: targets
+  gather_facts: yes
+  roles:
+    - k8s-creds
+    - role: k8s-check
+      when: want_5glab is defined and want_5glab
+    - volumes
+    - role: multinic
+      when: want_kubernetes_worker
+    - role: macvlan
+      when: want_5glab is defined and want_5glab
+    - role: sgw
+      when: want_upf is defined and want_upf
+    - role: pgw
+      when: want_upf is defined and want_upf
+    - role: pcrf
+      when: want_upf is defined and want_upf
+    - role: ecr
+      when: want_ecr is defined and want_ecr
+    - role: speedtest
+      when: want_st is defined and want_st
+    - role: computer-vision
+      when: want_cv is defined and want_cv

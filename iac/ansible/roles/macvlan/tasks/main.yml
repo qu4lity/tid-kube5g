@@ -1,0 +1,17 @@
+---
+- name: prepare macvlan yaml
+  template:
+    src: macvlan.yaml.j2
+    dest: /tmp/macvlan.yaml
+
+- name: destroy macvlan
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: absent
+    src: /tmp/macvlan.yaml
+
+- name: deploy macvlan
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: present
+    src: /tmp/macvlan.yaml

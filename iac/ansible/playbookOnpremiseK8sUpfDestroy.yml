@@ -1,0 +1,43 @@
+---
+- hosts: epc_onpremise
+  become: yes
+  become_user: root
+  become_method: sudo
+  remote_user: labuser
+  gather_facts: no
+
+  tasks:
+    - name: install pip3
+      become: yes
+      apt:
+        name: python3-pip
+        state: latest
+
+    - name: install openshift python library
+      become: yes
+      pip:
+        name: openshift
+        state: latest
+
+    - name: upload k8s resource definitions
+      template:
+        src: "./{{ item }}.j2"
+        dest: "/tmp/{{ item }}"
+        mode: 0644
+      loop:
+        - macvlan.yml
+        - sgw.yaml
+        - pgw.yaml
+        - pcrf.yaml
+
+    - name: apply k8s resource definitions
+      k8s:
+        kubeconfig: /tmp/kube.config
+        state: absent
+        namespace: default
+        src: "/tmp/{{ item }}"
+      loop:
+        - macvlan.yml
+        - sgw.yaml
+        - pgw.yaml
+        - pcrf.yaml

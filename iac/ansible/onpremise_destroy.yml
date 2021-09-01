@@ -1,0 +1,25 @@
+---
+- hosts: epc_onpremise
+  gather_facts: yes
+  roles:
+    - role: macvlan-destroy
+      when: want_5glab is defined and want_5glab
+    - role: sgw-destroy
+      when: want_upf is defined and want_upf
+    - role: pgw-destroy
+      when: want_upf is defined and want_upf
+    - role: pcrf-destroy
+      when: want_upf is defined and want_upf
+    - role: ecr-destroy
+      when: want_ecr is defined and want_ecr
+    - role: speedtest-destroy
+      when: want_st is defined and want_st
+    - role: computer-vision-destroy
+      when: want_cv is defined and want_cv
+
+- hosts: targets
+  gather_facts: yes
+  roles:
+    - k8s-creds
+    - multinic-destroy
+

@@ -1,0 +1,69 @@
+---
+- hosts: epc_onpremise
+  become: yes
+  become_user: root
+  become_method: sudo
+  remote_user: labuser
+  gather_facts: no
+
+  tasks:
+    - package_facts:
+        manager: apt
+
+    - name: print the ubuntu package facts
+      debug:
+        var: ansible_facts.packages
+
+    - name: install pip3
+      become: yes
+      apt:
+        name: python3-pip
+        state: latest
+
+    - name: install openshift python library
+      become: yes
+      pip:
+        name: openshift
+        state: latest
+
+    - name: check if k8s master is already initialized
+      wait_for:
+        port: 6443
+        host: k8s.local
+        state: present
+        timeout: 10
+      register: apiserver_check
+      ignore_errors: true
+
+    - name: upload k8s resource definitions
+      template:
+        src: "./{{ item }}.j2"
+        dest: "/tmp/{{ item }}"
+        mode: 0644
+      loop:
+        - macvlan.yml
+        - sgw.yaml
+        - pgw.yaml
+        - pcrf.yaml
+
+    - name: apply k8s resource definitions
+      k8s:
+        kubeconfig: /tmp/kube.config
+        state: present
+        namespace: default
+        src: "/tmp/{{ item }}"
+      loop:
+        - macvlan.yml
+        - sgw.yaml
+        - pgw.yaml
+        - pcrf.yaml
+
+    - name: get k8s credentials
+      host: k8smaster
+      roles:
+        - k8s-creds
+
+    - name: apply speedtest demo
+      host: epc-onpremise
+      roles:
+        - speedtest

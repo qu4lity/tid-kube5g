@@ -1,0 +1,15 @@
+- name: Get physical network list
+  command: find /sys/class/net -type l -not -lname '*virtual*' -printf '%f\n'
+  register: list_iface
+
+- name: Remove default interface
+  set_fact:
+    external_interface: "{{ list_iface.stdout_lines | difference([ansible_default_ipv4.interface]) | first }}"
+  ignore_errors: true
+
+- name: deactivate kubertelconetes
+  become: yes
+  shell:
+    cmd:  |
+      ip link delete dev {{ external_interface }}.{{ external_vlan }}
+  ignore_errors: true

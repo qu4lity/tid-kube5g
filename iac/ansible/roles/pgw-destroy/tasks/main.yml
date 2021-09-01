@@ -1,0 +1,13 @@
+---
+- name: prepare pgw yaml
+  template:
+    src: pgw.yaml.j2
+    dest: /tmp/pgw.yaml
+
+- name: destroy pgw
+  k8s:
+    kubeconfig: /tmp/kube.config
+    state: absent
+    namespace: default
+    src: /tmp/pgw.yaml
+
